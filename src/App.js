@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import AppRouter from './AppRouter';
+import Header from './components/header/Header';
+import Sidebar from './components/drawer/Sidebar';
 
 function App() {
+  let [openDrawer, setDrawer] = React.useState(false);
+
+  const toggleDrawer = () => event => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setDrawer(!openDrawer);
+  };
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="App">
+      <Header toggleDrawer={toggleDrawer} />
+      <div className="wrapper">
+        <Sidebar open={openDrawer} />
+        <main className="main-content">
+          <AppRouter />
+        </main>
+      </div>
+
     </div>
   );
 }
+
 
 export default App;

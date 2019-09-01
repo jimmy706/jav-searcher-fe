@@ -1,0 +1,17 @@
+.main-content{
+    width: 100%;
+    padding: 50px 0;
+    overflow: {
+        y: auto;
+        x: hidden;
+    }
+}
+
+.wrapper{
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
