@@ -4,7 +4,7 @@ import Header from './components/header/Header';
 import Sidebar from './components/drawer/Sidebar';
 import { Container } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
-
+import { BrowserRouter } from "react-router-dom";
 
 const containerStyle = makeStyles({
   root: {
@@ -26,19 +26,20 @@ function App() {
 
 
   return (
-    <div id="App">
-      <Header toggleDrawer={toggleDrawer} />
-      <div className="wrapper">
-        <Sidebar open={openDrawer} />
-        <main className="main-content">
-          <Container fixed={true} className={containerStyle().root}>
-            <AppRouter />
-          </Container>
-        </main>
-
+    <BrowserRouter>
+      <div id="App">
+        <Header toggleDrawer={toggleDrawer} />
+        <div className="wrapper">
+          <Sidebar open={openDrawer} />
+          <main className="main-content">
+            <Container fixed={true} className={containerStyle().root}>
+              <AppRouter />
+            </Container>
+          </main>
+        </div>
       </div>
+    </BrowserRouter>
 
-    </div>
   );
 }
 

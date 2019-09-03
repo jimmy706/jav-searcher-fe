@@ -1,9 +1,11 @@
-import React from 'react'
+import React from 'react';
+import sectionTypes from "../../constant/sections";
+import SectionContainer from './section/SectionContainer';
 
 export default function Landing() {
     return (
         <div>
-            <h1>Landing Page</h1>
+            <SectionContainer sectionType={sectionTypes.MODEL} />
         </div>
     )
 }

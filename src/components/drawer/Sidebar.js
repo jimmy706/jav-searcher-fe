@@ -3,6 +3,10 @@ import HistoryIcon from '@material-ui/icons/History';
 import FindInPageIcon from '@material-ui/icons/FindInPage';
 import StarIcon from '@material-ui/icons/Star';
 import MovieIcon from '@material-ui/icons/Movie';
+import AddToQueueIcon from '@material-ui/icons/AddToQueue';
+import { Link } from "react-router-dom";
+import axios from "axios";
+import prefixUrl from "../../constant/prefix-url";
 
 export default class Sidebar extends Component {
     constructor(props) {
@@ -14,18 +18,28 @@ export default class Sidebar extends Component {
         }
     }
 
+    componentDidMount() {
+        axios.get(prefixUrl + "/studios/all")
+            .then((studioData) => {
+                this.setState({
+                    studios: studioData.data.map(studio => studio.stdudioName).slice(0, 5)
+                })
+            })
+            .catch(err => console.log(err));
+    }
+
     renderLinkList = (type) => {
         switch (type) {
             case "studios":
                 return this.state.studios.map((studio, index) => (
                     <li key={"studio-" + index}>
-                        <a href="/" title={studio}>{studio}</a>
+                        <Link to="/" title={studio}>{studio}</Link>
                     </li>
                 ))
             case "starts":
                 return this.state.starts.map((start, index) => (
                     <li key={"start-" + index}>
-                        <a href="/" title={start}>{start}</a>
+                        <Link to="/" title={start}>{start}</Link>
                     </li>))
             default:
                 return [];
@@ -46,6 +60,11 @@ export default class Sidebar extends Component {
                         <div className="line" />
                         <ul className="sub-list">
                             <li>
+                                <a href="/">
+                                    <AddToQueueIcon /> New movie
+                                </a>
+                            </li>
+                            <li>
                                 <a href="/" >
                                     <FindInPageIcon /> Advance search
                                 </a>
@@ -61,7 +80,7 @@ export default class Sidebar extends Component {
                         <div className="line" />
                         <ul className="sub-list">
                             <li>
-                                <a className="section-guide" href="/">
+                                <a className="section-guide" href="/" title="Studios">
                                     <MovieIcon /> Studios:
                                 </a>
                             </li>
@@ -75,7 +94,7 @@ export default class Sidebar extends Component {
                         <div className="line" />
                         <ul className="sub-list">
                             <li>
-                                <a className="section-guide" href="/">
+                                <a className="section-guide" href="/" title="Stars">
                                     <StarIcon />Starts:
                                 </a>
                             </li>
