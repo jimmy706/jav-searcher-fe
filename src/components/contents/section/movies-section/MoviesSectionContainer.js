@@ -13,7 +13,11 @@ export default class MoviesSectionContainer extends Component {
 
     componentDidMount() {
         const { numberOfMovies, page } = this.props;
-        axios.get(prefixUrl + "/movies/movies-list?page=" + page)
+        axios.get(prefixUrl + "/movies/movies-list", {
+            params: {
+                page: page
+            }
+        })
             .then(movieData => {
                 this.setState({
                     movies: movieData.data.slice(0, numberOfMovies).sort((m1, m2) => (m1.movieId > m2.movieId) ? 1 : -1)

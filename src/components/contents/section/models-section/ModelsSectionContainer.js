@@ -20,7 +20,6 @@ export default class ModelsSectionContainer extends Component {
             }
         })
             .then(res => {
-                console.log(res.data);
                 this.setState({
                     models: res.data.slice(0, numberOfModels)
                 })
