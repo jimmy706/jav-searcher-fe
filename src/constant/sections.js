@@ -6,6 +6,10 @@ const sectionTypes = {
     RECENT: {
         title: "Recent views",
         url: "/"
+    },
+    MOVIES: {
+        title: "Movies",
+        url: "/"
     }
 }
 

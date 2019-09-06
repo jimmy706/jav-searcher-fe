@@ -1,0 +1,33 @@
+%section-comp{
+    position: relative;
+    .MuiCardMedia-media{
+        object-fit: fill;
+    }
+    p{
+        transition: color 0.4s ease-out;
+        font-size: 1rem;
+        color: $white;
+    }
+    img{
+        width: 100%;
+        height: 120px;
+    }
+    &::before{
+        content: '';
+        position: absolute;
+        top:0;
+        width: 100%;
+        height: 120px;
+        background-color: rgba(0, 0, 0, 0.411);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    &:hover::before{
+        opacity: 1;
+    }
+    &:hover{
+        p{
+            color: $blue;
+        }
+    }
+}

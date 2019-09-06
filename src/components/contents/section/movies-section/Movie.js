@@ -4,24 +4,24 @@ import { Card, CardContent, Typography, CardMedia, makeStyles } from "@material-
 
 const useStyles = makeStyles({
     card: {
-        background: "#040E17",
+        background: "#2C2C2C",
     }
 });
-export default function Model({ model }) {
-    const classes = useStyles();
 
+export default function Movie({ movie }) {
+    const classes = useStyles();
     return (
-        <Link to="/" className="model">
+        <Link className="movie" to={"/movies/detail/" + movie.movieId}>
             <Card className={classes.card}>
                 <CardMedia
                     component="img"
-                    alt={model.name}
-                    image={"data:image/png;base64," + model.avatar.data}
-                    title={model.name}
+                    alt={movie.movieId}
+                    image={"data:image/png;base64," + movie.movieImage.data}
+                    title={movie.movieId}
                 />
                 <CardContent>
                     <Typography component="p">
-                        {model.name}
+                        {movie.movieId}
                     </Typography>
                 </CardContent>
             </Card>

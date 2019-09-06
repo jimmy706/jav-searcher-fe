@@ -29,17 +29,17 @@
     }    
     .sub-list{
         margin-top: 15px;
-        li{
-            line-height: 2.5rem;
+        li{            
             padding: 0 10px;
             transition: background 0.3s ease;
             &:hover{
                 background-color: #162D40;
-                a{
+                a,.transparent-btn{
                     color: $blue;
                 }
             }
-            a{
+            a,.transparent-btn{
+                line-height: 2.5rem;
                 display: flex;
                 align-items: center;
                 width: 100%;

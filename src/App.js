@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppRouter from './AppRouter';
 import Header from './components/header/Header';
 import Sidebar from './components/drawer/Sidebar';
 import { Container } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter } from "react-router-dom";
+import { Dialog } from '@material-ui/core';
+import MovieModalForm from "./components/modals/MovieModalForm";
 
 const containerStyle = makeStyles({
   root: {
@@ -14,8 +16,10 @@ const containerStyle = makeStyles({
   }
 });
 
+
 function App() {
-  let [openDrawer, setDrawer] = React.useState(true);
+  let [openDrawer, setDrawer] = useState(true);
+  let [openModal, setModal] = useState(false);
 
   const toggleDrawer = () => event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -24,13 +28,21 @@ function App() {
     setDrawer(!openDrawer);
   };
 
+  const toggleModal = () => {
+    setModal(true);
+  }
+
+  const handleClose = () => {
+    setModal(false);
+  }
+
 
   return (
     <BrowserRouter>
       <div id="App">
         <Header toggleDrawer={toggleDrawer} />
         <div className="wrapper">
-          <Sidebar open={openDrawer} />
+          <Sidebar open={openDrawer} toggleModal={toggleModal} />
           <main className="main-content">
             <Container fixed={true} className={containerStyle().root}>
               <AppRouter />
@@ -38,8 +50,13 @@ function App() {
           </main>
         </div>
       </div>
-    </BrowserRouter>
 
+
+
+      <Dialog open={openModal} onClose={handleClose} aria-labelledby="form-dialog-title" scroll={'paper'}>
+        <MovieModalForm handleClose={handleClose} />
+      </Dialog>
+    </BrowserRouter>
   );
 }
 

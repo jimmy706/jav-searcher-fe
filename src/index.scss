@@ -1,7 +1,9 @@
 // TODO: base
 @import "./sass/base/_variable";
+@import "./sass/base/_mixin";
 @import "./sass/base/_reset";
 @import "./sass/base/_custom";
+@import "./sass/base/_extends";
 
 // TODO: layous
 @import "./sass/layouts/_main-content";
@@ -11,4 +13,6 @@
 @import "./sass/components/_line";
 @import "./sass/components/_sections";
 @import "./sass/components/_model";
-
+@import "./sass/components/_movies";
+@import "./sass/components/_buttons";
+@import "./sass/components/_modal";

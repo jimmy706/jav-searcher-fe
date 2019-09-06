@@ -98,6 +98,10 @@ a{
     cursor: pointer;
 }
 
+a:hover{
+    color: $blue;
+}
+
 .clean{
     clear: both;
 }

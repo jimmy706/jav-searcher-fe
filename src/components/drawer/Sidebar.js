@@ -4,6 +4,7 @@ import FindInPageIcon from '@material-ui/icons/FindInPage';
 import StarIcon from '@material-ui/icons/Star';
 import MovieIcon from '@material-ui/icons/Movie';
 import AddToQueueIcon from '@material-ui/icons/AddToQueue';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import { Link } from "react-router-dom";
 import axios from "axios";
 import prefixUrl from "../../constant/prefix-url";
@@ -46,9 +47,14 @@ export default class Sidebar extends Component {
         }
     }
 
-    static getDerivedStateFromProps(nextProps) {
-        return {
-            isOpen: nextProps.open
+    static getDerivedStateFromProps(nextProps, currentState) {
+        if (currentState.isOpen !== nextProps.open) {
+            return {
+                isOpen: nextProps.open
+            }
+        }
+        else {
+            return null;
         }
     }
 
@@ -60,9 +66,14 @@ export default class Sidebar extends Component {
                         <div className="line" />
                         <ul className="sub-list">
                             <li>
-                                <a href="/">
+                                <button className="transparent-btn" onClick={this.props.toggleModal}>
                                     <AddToQueueIcon /> New movie
-                                </a>
+                                </button>
+                            </li>
+                            <li>
+                                <button className="transparent-btn" onClick={this.props.toggleModal}>
+                                    <PersonAddIcon /> New model
+                                </button>
                             </li>
                             <li>
                                 <a href="/" >

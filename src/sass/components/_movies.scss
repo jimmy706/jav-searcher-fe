@@ -1,0 +1,6 @@
+.movies-section{
+    @include grid(repeat(5,1fr),20px);
+    .movie{
+        @extend %section-comp;
+    }
+}
