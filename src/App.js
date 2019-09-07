@@ -7,6 +7,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter } from "react-router-dom";
 import { Dialog } from '@material-ui/core';
 import MovieModalForm from "./components/modals/MovieModalForm";
+import ActressModalForm from "./components/modals/ActressModalForm";
+
+let modalType = null;
 
 const containerStyle = makeStyles({
   root: {
@@ -28,12 +31,24 @@ function App() {
     setDrawer(!openDrawer);
   };
 
-  const toggleModal = () => {
+  const toggleModal = (type) => {
+    modalType = type;
     setModal(true);
   }
 
   const handleClose = () => {
     setModal(false);
+  }
+
+  const renderModalContent = () => {
+    switch (modalType) {
+      case 'MOVIE':
+        return <MovieModalForm handleClose={handleClose} />
+      case 'MODEL':
+        return <ActressModalForm handleClose={handleClose} />
+      default:
+        return <MovieModalForm handleClose={handleClose} />
+    }
   }
 
 
@@ -54,7 +69,7 @@ function App() {
 
 
       <Dialog open={openModal} onClose={handleClose} aria-labelledby="form-dialog-title" scroll={'paper'}>
-        <MovieModalForm handleClose={handleClose} />
+        {renderModalContent()}
       </Dialog>
     </BrowserRouter>
   );

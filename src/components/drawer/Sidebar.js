@@ -59,6 +59,7 @@ export default class Sidebar extends Component {
     }
 
     render() {
+        const { toggleModal } = this.props;
         return (
             <div className={"sidebar " + (this.state.isOpen ? "open" : "")}>
                 <ul className="sidebar-content">
@@ -66,12 +67,12 @@ export default class Sidebar extends Component {
                         <div className="line" />
                         <ul className="sub-list">
                             <li>
-                                <button className="transparent-btn" onClick={this.props.toggleModal}>
+                                <button className="transparent-btn" onClick={() => toggleModal('MOVIE')}>
                                     <AddToQueueIcon /> New movie
                                 </button>
                             </li>
                             <li>
-                                <button className="transparent-btn" onClick={this.props.toggleModal}>
+                                <button className="transparent-btn" onClick={() => toggleModal('MODEL')}>
                                     <PersonAddIcon /> New model
                                 </button>
                             </li>

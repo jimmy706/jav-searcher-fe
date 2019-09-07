@@ -1,27 +1,29 @@
 import React, { Component } from 'react';
 import { DialogActions, DialogContent, DialogTitle, Button, TextField, Checkbox, FormControlLabel, Fab } from "@material-ui/core";
-import axios from "axios";
 import DragNDrop from "../dragndrop/DragNDrop";
+import axios from "axios";
 import prefixUrl from "../../constant/prefix-url";
 
-export default class MovieModalForm extends Component {
+
+
+export default class ActressModalForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             useUrl: true,
-            movieImg: null,
-            movieId: '',
+            avatar: null,
+            name: '',
             url: ''
         }
     }
 
-    handleAddMovie = () => {
-        const { useUrl, movieId, movieImg, url } = this.state;
+    handleAddModel = () => {
+        const { name, url, avatar, useUrl } = this.state;
         if (useUrl) {
             axios({
-                url: prefixUrl + "/movies/add-movie-with-url",
+                url: prefixUrl + "/models/add-model-with-url-avatar",
                 params: {
-                    movieId: movieId,
+                    name: name,
                     url: url
                 },
                 method: 'POST'
@@ -34,10 +36,10 @@ export default class MovieModalForm extends Component {
         }
         else {
             const formData = new FormData();
-            formData.append("movieImg", movieImg);
-            formData.append("movieId", movieId);
+            formData.append("name", name);
+            formData.append("avatar", avatar);
             axios({
-                url: prefixUrl + "/movies/add-movie",
+                url: prefixUrl + "/models/add-model",
                 data: formData,
                 method: 'post',
                 headers: {
@@ -52,8 +54,8 @@ export default class MovieModalForm extends Component {
         }
     }
 
-    handleUploadFile = (movieImg) => {
-        this.setState({ movieImg })
+    handleUploadFile = (avatar) => {
+        this.setState({ avatar })
     }
 
     handleCheckBox = () => {
@@ -70,13 +72,14 @@ export default class MovieModalForm extends Component {
         })
     }
 
+
     render() {
-        const { handleClose } = this.props;
         const { useUrl } = this.state;
+        const { handleClose } = this.props;
         return (
             <div className="modal">
                 <DialogTitle>
-                    Add new movie
+                    Add new model
                 </DialogTitle>
 
                 <DialogContent >
@@ -86,18 +89,18 @@ export default class MovieModalForm extends Component {
                     <TextField
                         autoFocus
                         margin="normal"
-                        id="movieId"
-                        label="Movie ID"
+                        id="modalName"
+                        label="Model name"
                         type="text"
                         fullWidth
-                        name="movieId"
+                        name="name"
                         autoComplete="off"
                         onChange={this.handleChangeValueInput}
                     />
                     <TextField
                         type="text"
                         id="url"
-                        label="Movie image URL"
+                        label="Model avatar URL"
                         fullWidth
                         name="url"
                         margin="normal"
@@ -114,11 +117,10 @@ export default class MovieModalForm extends Component {
                     <Button onClick={handleClose} color="default">
                         Cancel
                      </Button>
-                    <Fab variant="extended" onClick={this.handleAddMovie} color="primary" size="medium">
+                    <Fab variant="extended" onClick={this.handleAddModel} color="primary" size="medium">
                         Save
                     </Fab>
                 </DialogActions>
-
             </div>
         )
     }

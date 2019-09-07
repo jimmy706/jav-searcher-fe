@@ -1,5 +1,8 @@
 %section-comp{
     position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     .MuiCardMedia-media{
         object-fit: fill;
     }
@@ -7,6 +10,9 @@
         transition: color 0.4s ease-out;
         font-size: 1rem;
         color: $white;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     img{
         width: 100%;
