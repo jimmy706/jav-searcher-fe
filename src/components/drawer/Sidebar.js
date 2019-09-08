@@ -4,7 +4,8 @@ import FindInPageIcon from '@material-ui/icons/FindInPage';
 import StarIcon from '@material-ui/icons/Star';
 import MovieIcon from '@material-ui/icons/Movie';
 import AddToQueueIcon from '@material-ui/icons/AddToQueue';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import CategoryIcon from '@material-ui/icons/Category';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import { Link } from "react-router-dom";
 import axios from "axios";
 import prefixUrl from "../../constant/prefix-url";
@@ -73,8 +74,13 @@ export default class Sidebar extends Component {
                             </li>
                             <li>
                                 <button className="transparent-btn" onClick={() => toggleModal('MODEL')}>
-                                    <PersonAddIcon /> New model
+                                    <GroupAddIcon /> New model
                                 </button>
+                            </li>
+                            <li>
+                                <Link to="/tags/all" title="tags">
+                                    <CategoryIcon /> tags
+                                </Link>
                             </li>
                             <li>
                                 <a href="/" >
@@ -92,9 +98,9 @@ export default class Sidebar extends Component {
                         <div className="line" />
                         <ul className="sub-list">
                             <li>
-                                <a className="section-guide" href="/" title="Studios">
+                                <Link className="section-guide" to="/" title="Studios">
                                     <MovieIcon /> Studios:
-                                </a>
+                                </Link>
                             </li>
                             {this.renderLinkList("studios")}
                             <li>
@@ -106,9 +112,9 @@ export default class Sidebar extends Component {
                         <div className="line" />
                         <ul className="sub-list">
                             <li>
-                                <a className="section-guide" href="/" title="Stars">
+                                <Link className="section-guide" to="/" title="Stars">
                                     <StarIcon />Starts:
-                                </a>
+                                </Link>
                             </li>
                             {this.renderLinkList("starts")}
                             <li>
