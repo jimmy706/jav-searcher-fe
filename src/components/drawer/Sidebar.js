@@ -79,7 +79,7 @@ export default class Sidebar extends Component {
                             </li>
                             <li>
                                 <Link to="/tags/all" title="tags">
-                                    <CategoryIcon /> tags
+                                    <CategoryIcon /> Tags
                                 </Link>
                             </li>
                             <li>

@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import AppRouter from './AppRouter';
 import Header from './components/header/Header';
 import Sidebar from './components/drawer/Sidebar';
-import { Container } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter } from "react-router-dom";
-import { Dialog } from '@material-ui/core';
+import { Dialog, Container } from '@material-ui/core';
 import MovieModalForm from "./components/modals/MovieModalForm";
 import ActressModalForm from "./components/modals/ActressModalForm";
 

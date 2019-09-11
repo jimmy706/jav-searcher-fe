@@ -2,11 +2,7 @@
     margin-top: 45px;
     margin-bottom: 30px;
     .title-wrapper{
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-        padding-bottom: 5px;
-        margin-bottom: 30px;
+       @extend %space-between;
         &::before{
             content: '';
             position: absolute;
