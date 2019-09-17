@@ -6,12 +6,16 @@ import { Grid, Dialog } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MovieDetailModalForm from "../modals/MovieDetailModalForm";
 
+let tagDatas = null;
+
 export default class MovieDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
             movieInfo: {},
-            openModal: false
+            openModal: false,
+            openModalList: false,
+            typeModelList: 'tags'
         }
     }
 
@@ -27,9 +31,16 @@ export default class MovieDetail extends Component {
         const movieId = this.props.match.params.movieId;
         document.title = movieId;
 
+        axiso.get(prefixUrl + "/tags/all-tags")
+            .then(res => {
+                tagDatas = res.data;
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
         axiso.get(prefixUrl + "/movies/movie-info/" + movieId)
             .then(res => {
-                console.log(res.data);
                 this.setState({
                     movieInfo: res.data
                 })
@@ -85,14 +96,7 @@ export default class MovieDetail extends Component {
                                 </div>
                                 <ul className="info-list">
                                     <li>
-                                        <strong>Tags: {renderDetailList()}</strong>
-                                    </li>
-                                    <li>
-                                        <strong>Actors: {renderDetailList()}</strong>
-                                    </li>
-                                    <li>
                                         <strong>Release date: {renderDetailList()}</strong>
-
                                     </li>
                                     <li>
                                         <strong>Studio: {renderDetailList()}</strong>
@@ -100,16 +104,34 @@ export default class MovieDetail extends Component {
                                     <li>
                                         <strong>Length: {renderDetailList()}</strong>
                                     </li>
+                                    <li>
+                                        <strong>Description:</strong>
+                                        <p className="movie-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                    </li>
                                 </ul>
                             </div>
                         </Grid>
                     </Grid>
-                    <h3>Description:</h3>
-                    <hr />
-                    <p className="movie-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+
+                    <div className="wrap-block">
+                        <div className="line-break">
+                            <span className="section-title">Tags:</span>
+                            <button className="transparent-btn" onClick={handleOpenModal}> Edit</button>
+                        </div>
+                    </div>
+
+                    <div className="wrap-block">
+                        <div className="line-break">
+                            <span className="section-title">Actresses:</span>
+                            <button className="transparent-btn" onClick={handleOpenModal}> Edit</button>
+                        </div>
+                    </div>
+
+
                 </div>
                 <Dialog open={openModal} scroll={'paper'} onClose={closeModal}>
-                    <MovieDetailModalForm movieDetail={movieDetail} closeModal={closeModal} />
+                    <MovieDetailModalForm movieDetail={movieDetail} closeModal={closeModal} movieId={movieInfo.movieId} />
                 </Dialog>
             </div>
         )

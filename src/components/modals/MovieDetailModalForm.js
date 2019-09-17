@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { DialogActions, DialogContent, DialogTitle, Button, TextField, Fab, Grid } from "@material-ui/core";
+import { DialogActions, DialogContent, DialogTitle, Button, TextField, Fab, Grid, Select, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
+import axios from "axios";
+import prefixUrl from "../../constant/prefix-url";
 
-
+let studios = [];
 
 export default class MovieDetailModalForm extends Component {
     constructor(props) {
@@ -15,12 +17,28 @@ export default class MovieDetailModalForm extends Component {
             releaseDate: new Date(),
             content: '',
             length: 60,
-            link: ''
+            link: '',
+            openSelect: false
         }
     }
 
+    handleOpenSelect = () => {
+        this.setState({ openSelect: true })
+    }
+
+    handleCloseSelect = () => {
+        this.setState({ openSelect: false })
+    }
+
+    componentDidMount() {
+        axios.get(prefixUrl + "/studios/all")
+            .then(res => {
+                studios = res.data.map(studio => studio.stdudioName);
+            })
+    }
+
     handleChangeValueInput = (e) => {
-        console.log(e.target.value);
+        this.setState({ [e.target.name]: e.target.value })
     }
 
     handleChangeDate = (date) => {
@@ -30,12 +48,16 @@ export default class MovieDetailModalForm extends Component {
     }
 
     handleSubmit = () => {
+        console.log(this.state);
+    }
 
+    renderStudiosOption = () => {
+        return studios.map(studio => (<MenuItem key={studio} value={studio}>{studio}</MenuItem>))
     }
 
     render() {
         const { closeModal } = this.props;
-        const { releaseDate } = this.state;
+        const { releaseDate, openSelect } = this.state;
         return (
             <div className="modal">
                 <DialogTitle>Edit movie detail:</DialogTitle>
@@ -76,16 +98,23 @@ export default class MovieDetailModalForm extends Component {
 
                     <Grid container spacing={3}>
                         <Grid item xs={6}>
-                            <TextField
-                                margin="normal"
-                                id="studio"
-                                label="Studio"
-                                type="text"
-                                fullWidth
-                                name="studio"
-                                autoComplete="off"
-                                onChange={this.handleChangeValueInput}
-                            />
+                            <FormControl fullWidth margin="normal">
+                                <InputLabel htmlFor="open-select">Studio</InputLabel>
+                                <Select
+                                    open={openSelect}
+                                    onClose={this.handleCloseSelect}
+                                    onOpen={this.handleOpenSelect}
+                                    value={this.state.studio}
+                                    onChange={this.handleChangeValueInput}
+                                    name="studio"
+                                    inputProps={{
+                                        name: 'studio',
+                                        id: 'open-select',
+                                    }}
+                                >
+                                    {this.renderStudiosOption()}
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
