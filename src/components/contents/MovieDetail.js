@@ -5,8 +5,9 @@ import prefixUrl from "../../constant/prefix-url";
 import { Grid, Dialog } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MovieDetailModalForm from "../modals/MovieDetailModalForm";
+import moment from "moment";
+import TagsModalForm from '../modals/TagsModalForm';
 
-let tagDatas = null;
 
 export default class MovieDetail extends Component {
     constructor(props) {
@@ -14,8 +15,7 @@ export default class MovieDetail extends Component {
         this.state = {
             movieInfo: {},
             openModal: false,
-            openModalList: false,
-            typeModelList: 'tags'
+            modalType: 'DETAIL'
         }
     }
 
@@ -23,21 +23,13 @@ export default class MovieDetail extends Component {
         this.setState({ openModal: false });
     }
 
-    handleOpenModal = () => {
-        this.setState({ openModal: true });
+    handleOpenModal = (type) => {
+        this.setState({ openModal: true, modalType: type });
     }
 
     componentDidMount() {
         const movieId = this.props.match.params.movieId;
         document.title = movieId;
-
-        axiso.get(prefixUrl + "/tags/all-tags")
-            .then(res => {
-                tagDatas = res.data;
-            })
-            .catch(err => {
-                console.log(err);
-            })
 
         axiso.get(prefixUrl + "/movies/movie-info/" + movieId)
             .then(res => {
@@ -61,13 +53,42 @@ export default class MovieDetail extends Component {
     }
 
     renderDetailList = (type) => {
-        const { movieDetail } = this.state;
+        const { movieDetail } = this.state.movieInfo;
         if (movieDetail) {
-            console.log(movieDetail[type]);
-            return null;
+            switch (type) {
+                case "releaseDate":
+                    return moment(movieDetail["releaseDate"]).format("MM/DD/YYYY");
+                default:
+                    return movieDetail[type];
+            }
         }
         else {
             return null;
+        }
+    }
+
+    renderTitle = () => {
+        const { movieDetail } = this.state.movieInfo;
+        if (movieDetail) {
+            return (
+                <h3 className="movie-title">
+                    <a href={movieDetail.link} target="_blank" rel="noopener noreferrer">{movieDetail.movieName}</a>
+                </h3>
+            );
+        }
+        else {
+            return <h3 className="movie-title">{this.state.movieInfo.movieId}</h3>
+        }
+    }
+
+    renderModalContent = () => {
+        const { modalType, movieInfo } = this.state;
+        const { movieDetail } = movieInfo;
+        switch (modalType) {
+            case "TAGS":
+                return <TagsModalForm closeModal={this.closeModal} />;
+            default:
+                return <MovieDetailModalForm movieDetail={movieDetail ? movieDetail : {}} closeModal={this.closeModal} movieId={movieInfo.movieId} />
         }
     }
 
@@ -89,24 +110,27 @@ export default class MovieDetail extends Component {
                         </Grid>
                         <Grid item xs={6}>
                             <div className="movie-info">
-                                <h3 className="movie-title">{movieDetail ? movieDetail.movieName : movieInfo.movieId}</h3>
+                                {this.renderTitle()}
                                 <div className="line-break">
                                     <span className="section-title">Movie detail:</span>
-                                    <button className="transparent-btn" onClick={handleOpenModal}> Edit</button>
+                                    <button className="transparent-btn" onClick={() => handleOpenModal("")}> Edit</button>
                                 </div>
                                 <ul className="info-list">
                                     <li>
-                                        <strong>Release date: {renderDetailList()}</strong>
+                                        <strong>Release date: </strong>
+                                        <span>{renderDetailList("releaseDate")}</span>
                                     </li>
                                     <li>
-                                        <strong>Studio: {renderDetailList()}</strong>
+                                        <strong>Studio: </strong>
+                                        {movieDetail ? <Link to={movieDetail["studio"] ? ("/studios/" + movieDetail["studio"]) : "/"}>{renderDetailList("studio")}</Link> : null}
                                     </li>
                                     <li>
-                                        <strong>Length: {renderDetailList()}</strong>
+                                        <strong>Length: </strong>
+                                        <span>{renderDetailList("length")} min</span>
                                     </li>
                                     <li>
                                         <strong>Description:</strong>
-                                        <p className="movie-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                                        <p className="movie-desc" style={{ marginTop: 0 }}>{renderDetailList("content")}</p>
                                     </li>
                                 </ul>
                             </div>
@@ -117,21 +141,19 @@ export default class MovieDetail extends Component {
                     <div className="wrap-block">
                         <div className="line-break">
                             <span className="section-title">Tags:</span>
-                            <button className="transparent-btn" onClick={handleOpenModal}> Edit</button>
+                            <button className="transparent-btn" onClick={() => handleOpenModal("TAGS")}> Edit</button>
                         </div>
                     </div>
 
                     <div className="wrap-block">
                         <div className="line-break">
                             <span className="section-title">Actresses:</span>
-                            <button className="transparent-btn" onClick={handleOpenModal}> Edit</button>
+                            <button className="transparent-btn" onClick={() => handleOpenModal("MODALS")}> Edit</button>
                         </div>
                     </div>
-
-
                 </div>
-                <Dialog open={openModal} scroll={'paper'} onClose={closeModal}>
-                    <MovieDetailModalForm movieDetail={movieDetail} closeModal={closeModal} movieId={movieInfo.movieId} />
+                <Dialog open={openModal} scroll={"body"} onClose={closeModal}>
+                    {this.renderModalContent()}
                 </Dialog>
             </div>
         )

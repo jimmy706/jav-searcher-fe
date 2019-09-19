@@ -10,14 +10,16 @@ let studios = [];
 export default class MovieDetailModalForm extends Component {
     constructor(props) {
         super(props);
+
+        const { content, movieName, studio, releaseDate, length, link } = this.props.movieDetail;
+
         this.state = {
-            id: '',
-            movieName: '',
-            studio: '',
-            releaseDate: new Date(),
-            content: '',
-            length: 60,
-            link: '',
+            movieName: movieName ? movieName : '',
+            studio: studio ? studio : '',
+            releaseDate: releaseDate ? new Date(releaseDate) : new Date(),
+            content: content ? content : '',
+            length: length ? length : 60,
+            link: link ? link : '',
             openSelect: false
         }
     }
@@ -37,6 +39,10 @@ export default class MovieDetailModalForm extends Component {
             })
     }
 
+    componentWillUnmount() {
+        studios = [];
+    }
+
     handleChangeValueInput = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
@@ -48,7 +54,25 @@ export default class MovieDetailModalForm extends Component {
     }
 
     handleSubmit = () => {
-        console.log(this.state);
+        const { id, movieName, studio, releaseDate, content, link, length } = this.state;
+        axios({
+            url: prefixUrl + "/movies/update-movie-info/" + this.props.movieId,
+            method: "post",
+            data: {
+                id: id,
+                movieName: movieName,
+                studio: studio,
+                releaseDate: releaseDate,
+                content: content,
+                link: link,
+                length: parseInt(length)
+            }
+        })
+            .then(res => {
+                console.log(res);
+                this.props.closeModal();
+            })
+            .catch(console.log);
     }
 
     renderStudiosOption = () => {
@@ -57,7 +81,7 @@ export default class MovieDetailModalForm extends Component {
 
     render() {
         const { closeModal } = this.props;
-        const { releaseDate, openSelect } = this.state;
+        const { content, movieName, studio, releaseDate, length, link, openSelect } = this.state;
         return (
             <div className="modal">
                 <DialogTitle>Edit movie detail:</DialogTitle>
@@ -74,6 +98,7 @@ export default class MovieDetailModalForm extends Component {
                                 name="movieName"
                                 autoComplete="off"
                                 onChange={this.handleChangeValueInput}
+                                value={movieName}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -104,13 +129,13 @@ export default class MovieDetailModalForm extends Component {
                                     open={openSelect}
                                     onClose={this.handleCloseSelect}
                                     onOpen={this.handleOpenSelect}
-                                    value={this.state.studio}
                                     onChange={this.handleChangeValueInput}
                                     name="studio"
                                     inputProps={{
                                         name: 'studio',
                                         id: 'open-select',
                                     }}
+                                    value={studio}
                                 >
                                     {this.renderStudiosOption()}
                                 </Select>
@@ -126,6 +151,7 @@ export default class MovieDetailModalForm extends Component {
                                 name="length"
                                 autoComplete="off"
                                 onChange={this.handleChangeValueInput}
+                                value={length}
                             />
                         </Grid>
                     </Grid>
@@ -138,8 +164,9 @@ export default class MovieDetailModalForm extends Component {
                         name="link"
                         autoComplete="off"
                         onChange={this.handleChangeValueInput}
+                        value={link}
                     />
-                    <textarea className="textarea" name="content" placeholder="Write movie's description here..."></textarea>
+                    <textarea className="textarea" name="content" placeholder="Write movie's description here..." onChange={this.handleChangeValueInput} value={content}></textarea>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={closeModal} color="default">
