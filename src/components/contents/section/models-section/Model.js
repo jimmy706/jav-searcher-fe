@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import { Card, CardContent, Typography, CardMedia, makeStyles } from "@material-ui/core";
+import prefixUrl from "../../../../constant/prefix-url";
+
 
 const useStyles = makeStyles({
     card: {
@@ -16,7 +18,7 @@ export default function Model({ model }) {
                 <CardMedia
                     component="img"
                     alt={model.name}
-                    image={"data:image/png;base64," + model.avatar.data}
+                    image={prefixUrl + model.avatar}
                     title={model.name}
                 />
                 <CardContent>

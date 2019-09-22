@@ -45,7 +45,7 @@ export default class MovieDetail extends Component {
     renderImage = () => {
         const { movieInfo } = this.state;
         if (movieInfo.movieImage) {
-            return <img src={"data:image/png;base64," + movieInfo.movieImage.data} className="movie-img" alt={movieInfo.movieId} />
+            return <img src={prefixUrl + movieInfo.movieImage} className="movie-img" alt={movieInfo.movieId} />
         }
         else {
             return null;
@@ -152,7 +152,7 @@ export default class MovieDetail extends Component {
                         </div>
                     </div>
                 </div>
-                <Dialog open={openModal} scroll={"body"} onClose={closeModal}>
+                <Dialog open={openModal} onClose={closeModal}>
                     {this.renderModalContent()}
                 </Dialog>
             </div>

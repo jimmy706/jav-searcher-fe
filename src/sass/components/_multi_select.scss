@@ -1,0 +1,90 @@
+.multi-select-wrapper{
+    .search-wrapper{
+        display: flex;
+        border: 2px solid $blue;
+        border-radius: 20px;
+        background-color: inherit;
+        position: relative;
+        padding: 5px; 
+        .search-input{
+            border: 0;
+            width: 100%;
+            margin-left: 5px;
+            background: inherit;
+            color: $white;
+        }
+        .options{
+            position: absolute;
+            top: 40px;
+            left: 0;
+            z-index: 10;
+            width: 100%;
+            margin:0;
+            text-overflow: ellipsis;
+            box-shadow: 2px 3px 5px rgba(0,0,0,0.3);
+            li{
+                line-height: 3;
+                padding-left: 10px;
+                background-color:$light-dark-blue;
+                color: $white;
+                cursor: pointer;
+                transition: background-color 0.2 ease;
+                &:hover{
+                    background-color: rgba(11, 34, 57, 0.623);
+                }
+                &:first-child{
+                    border-top-right-radius: 5px;
+                    border-top-left-radius: 5px;
+                }
+                &:last-child{
+                    border-bottom-right-radius: 5px;
+                    border-bottom-left-radius: 5px;
+                }
+                &:not(:last-child){
+                    border-bottom: 1px solid rgba(0, 2, 26, 0.2);
+                }
+            }
+        }        
+    }
+    .options-space{
+        height: 300px;
+        width: 100%;
+    }
+    .selected-wrapper{
+        .selected-item{
+            box-sizing: border-box;
+            padding: 5px 10px;
+            color: $white;
+            background-color: $blue;
+            border-radius: 10px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            float: left;
+            max-width: 120px;
+            margin-right: 10px;
+            margin-bottom: 15px;
+            .rm-btn{
+                padding: 2px;
+                background-color: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                margin-right: 5px;
+                display: flex;
+                align-items: center;                
+                transition: background-color 0.2s ease;
+                svg{
+                    font-size: 14px;
+                    text-align: center;     
+                    cursor: pointer;      
+                    display: block;     
+                }
+                &:hover{
+                    background-color: rgba(255, 255, 255, 0.5);
+                }
+            }
+        }
+    }
+}
