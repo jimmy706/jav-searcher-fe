@@ -83,13 +83,25 @@ export default class MovieDetail extends Component {
 
     renderModalContent = () => {
         const { modalType, movieInfo } = this.state;
-        const { movieDetail } = movieInfo;
+        const { movieDetail, tags } = movieInfo;
         switch (modalType) {
             case "TAGS":
-                return <TagsModalForm closeModal={this.closeModal} />;
+                return <TagsModalForm closeModal={this.closeModal} movieId={movieInfo.movieId} selected={tags} />;
             default:
-                return <MovieDetailModalForm movieDetail={movieDetail ? movieDetail : {}} closeModal={this.closeModal} movieId={movieInfo.movieId} />
+                return <MovieDetailModalForm movieDetail={movieDetail ? movieDetail : {}}
+                    closeModal={this.closeModal}
+                />
         }
+    }
+
+    renderTags = () => {
+        const { movieInfo } = this.state;
+        if (movieInfo["tags"])
+            return movieInfo["tags"].map(tag => {
+                return <li className="tag-item" key={tag}><Link to={"/tags/" + tag}>{tag}</Link></li>
+            })
+        else
+            return null;
     }
 
     render() {
@@ -143,6 +155,9 @@ export default class MovieDetail extends Component {
                             <span className="section-title">Tags:</span>
                             <button className="transparent-btn" onClick={() => handleOpenModal("TAGS")}> Edit</button>
                         </div>
+                        <ul className="tag-list">
+                            {this.renderTags()}
+                        </ul>
                     </div>
 
                     <div className="wrap-block">
@@ -150,6 +165,9 @@ export default class MovieDetail extends Component {
                             <span className="section-title">Actresses:</span>
                             <button className="transparent-btn" onClick={() => handleOpenModal("MODALS")}> Edit</button>
                         </div>
+                        <ul className="actress-list">
+
+                        </ul>
                     </div>
                 </div>
                 <Dialog open={openModal} onClose={closeModal}>

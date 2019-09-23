@@ -8,7 +8,7 @@ export default class MultiSelect extends Component {
         super(props);
         this.state = {
             suggestions: [],
-            selected: [],
+            selected: this.props.selected ? this.props.selected : [],
             input: ""
         }
     }

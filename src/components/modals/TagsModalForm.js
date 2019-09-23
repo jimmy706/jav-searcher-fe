@@ -12,7 +12,7 @@ export default class TagsModalForm extends Component {
         super(props);
         this.state = {
             tags: [], // TODO: use for suggestion props of <MultiSelect/>
-            selected: []
+            selected: this.props.selected
         }
     }
 
@@ -41,10 +41,22 @@ export default class TagsModalForm extends Component {
 
     handleSubmit = () => {
 
+        axios({
+            url: prefixUrl + "/movies/set-tags/" + this.props.movieId,
+            params: {
+                tags: [...this.state.selected]
+            },
+            method: "post"
+        })
+            .then(res => {
+                console.log(res.data);
+                this.props.closeModal();
+            })
+            .catch(console.log);
     }
 
     render() {
-        const { tags } = this.state;
+        const { tags, selected } = this.state;
         return (
             <div className="modal">
                 <DialogTitle>Update tags:</DialogTitle>
@@ -52,13 +64,14 @@ export default class TagsModalForm extends Component {
                     {tags.length ? <MultiSelect suggestions={tags}
                         placeholder="Type to search tag"
                         onSelectItem={this.selectItem}
-                        onRemoveItem={this.removeItem} /> : null}
+                        onRemoveItem={this.removeItem}
+                        selected={selected} /> : null}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.props.closeModal} color="default">
                         Cancel
                      </Button>
-                    <Fab variant="extended" color="primary" size="medium">
+                    <Fab variant="extended" color="primary" size="medium" onClick={this.handleSubmit}>
                         Save
                     </Fab>
                 </DialogActions>

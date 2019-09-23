@@ -37,4 +37,21 @@
             line-height: 2;
         }
     }
+    .tag-list{
+        display: flex;        
+    }
+    .tag-item{
+        background-color: $blue;
+        text-align: center;
+        border-radius: 10px;
+        margin-right: 15px;
+        &:hover{
+            background-color: rgb(63, 161, 223);
+        }
+        a{
+            padding: 10px 15px;
+            color: $white;
+            display: block;
+        }
+    }
 }
