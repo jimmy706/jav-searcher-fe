@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import axiso from "axios";
+import React, { Component, Suspense } from 'react';
+import axios from "axios";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import prefixUrl from "../../constant/prefix-url";
 import { Grid, Dialog } from "@material-ui/core";
@@ -7,7 +7,9 @@ import { Link } from "react-router-dom";
 import MovieDetailModalForm from "../modals/MovieDetailModalForm";
 import moment from "moment";
 import TagsModalForm from '../modals/TagsModalForm';
-
+import BlockContentLoader from "../content-loaders/SmallBlockContentLoader";
+import MoviesUpdateActressForm from '../modals/MoviesUpdateActressForm';
+const ModelAsync = React.lazy(() => import("./section/models-section/ModelAsync"));
 
 export default class MovieDetail extends Component {
     constructor(props) {
@@ -31,7 +33,7 @@ export default class MovieDetail extends Component {
         const movieId = this.props.match.params.movieId;
         document.title = movieId;
 
-        axiso.get(prefixUrl + "/movies/movie-info/" + movieId)
+        axios.get(prefixUrl + "/movies/movie-info/" + movieId)
             .then(res => {
                 this.setState({
                     movieInfo: res.data
@@ -83,13 +85,17 @@ export default class MovieDetail extends Component {
 
     renderModalContent = () => {
         const { modalType, movieInfo } = this.state;
-        const { movieDetail, tags } = movieInfo;
+        const { movieDetail, tags, actresses } = movieInfo;
         switch (modalType) {
             case "TAGS":
-                return <TagsModalForm closeModal={this.closeModal} movieId={movieInfo.movieId} selected={tags} />;
+                return <TagsModalForm closeModal={this.closeModal} movieId={movieInfo.movieId} selected={tags} changeMovieInfo={this.changeMovieInfo} />;
+            case "MODELS":
+                return <MoviesUpdateActressForm closeModal={this.closeModal} movieId={movieInfo.movieId} selected={actresses} changeMovieInfo={this.changeMovieInfo} />
             default:
                 return <MovieDetailModalForm movieDetail={movieDetail ? movieDetail : {}}
                     closeModal={this.closeModal}
+                    changeMovieInfo={this.changeMovieInfo}
+                    movieId={movieInfo.movieId}
                 />
         }
     }
@@ -102,6 +108,29 @@ export default class MovieDetail extends Component {
             })
         else
             return null;
+    }
+
+    renderModels = () => {
+        const { movieInfo } = this.state;
+        if (movieInfo["actresses"]) {
+            return movieInfo["actresses"].map(modelName => {
+                return (
+                    <Suspense key={modelName} fallback={<BlockContentLoader />}>
+                        <ModelAsync modelName={modelName} />
+                    </Suspense>
+                )
+            });
+        }
+        return null;
+    }
+
+    changeMovieInfo = (type, data) => {
+        this.setState((state) => {
+            state.movieInfo[type] = data;
+            return {
+                movieInfo: state.movieInfo
+            }
+        })
     }
 
     render() {
@@ -162,11 +191,11 @@ export default class MovieDetail extends Component {
 
                     <div className="wrap-block">
                         <div className="line-break">
-                            <span className="section-title">Actresses:</span>
-                            <button className="transparent-btn" onClick={() => handleOpenModal("MODALS")}> Edit</button>
+                            <span className="section-title">Models:</span>
+                            <button className="transparent-btn" onClick={() => handleOpenModal("MODELS")}> Edit</button>
                         </div>
-                        <ul className="actress-list">
-
+                        <ul className="actress-list models-section">
+                            {this.renderModels()}
                         </ul>
                     </div>
                 </div>

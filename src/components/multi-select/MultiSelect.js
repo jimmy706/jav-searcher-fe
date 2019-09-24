@@ -16,19 +16,24 @@ export default class MultiSelect extends Component {
 
 
     handleSearchOption = (e) => {
-        let val = e.target.value;
+        let val = e.target.value.trim();
         this.setState({ input: val })
     }
 
     handleOnChange = (e) => {
-        const val = e.target.value;
+        const val = e.target.value.trim();
+        const { suggestions, onChange } = this.props;
+        if (onChange) {
+            onChange(val);
+        }
+
         if (val !== "") {
             this.setState({
-                suggestions: this.props.suggestions.filter(item => item.toUpperCase().includes(val.trim().toUpperCase())).slice(0, 6)
+                suggestions: suggestions.filter(item => item.toUpperCase().includes(val.toUpperCase())).slice(0, 6)
             })
         }
         else {
-            this.setState({ suggestions: this.props.suggestions })
+            this.setState({ suggestions: suggestions })
         }
     }
 

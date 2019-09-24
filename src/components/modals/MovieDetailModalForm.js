@@ -54,12 +54,11 @@ export default class MovieDetailModalForm extends Component {
     }
 
     handleSubmit = () => {
-        const { id, movieName, studio, releaseDate, content, link, length } = this.state;
+        const { movieName, studio, releaseDate, content, link, length } = this.state;
         axios({
             url: prefixUrl + "/movies/update-movie-info/" + this.props.movieId,
             method: "post",
             data: {
-                id: id,
                 movieName: movieName,
                 studio: studio,
                 releaseDate: releaseDate,
@@ -70,6 +69,7 @@ export default class MovieDetailModalForm extends Component {
         })
             .then(res => {
                 console.log(res);
+                this.props.changeMovieInfo("movieDetail", { movieName, studio, releaseDate, content, link, length })
                 this.props.closeModal();
             })
             .catch(console.log);

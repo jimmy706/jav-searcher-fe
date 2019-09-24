@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { DialogActions, DialogContent, DialogTitle, Button, Fab } from "@material-ui/core";
 import axios from "axios";
 import prefixUrl from "../../constant/prefix-url";
-import MultiSelect from '../contents/multi-select/MultiSelect';
+import MultiSelect from '../multi-select/MultiSelect';
 
 // TODO: temp variable to contain all tag
 let allTags = [];
@@ -46,10 +46,10 @@ export default class TagsModalForm extends Component {
             params: {
                 tags: [...this.state.selected]
             },
-            method: "post"
+            method: "put"
         })
             .then(res => {
-                console.log(res.data);
+                this.props.changeMovieInfo("tags", this.state.selected);
                 this.props.closeModal();
             })
             .catch(console.log);
