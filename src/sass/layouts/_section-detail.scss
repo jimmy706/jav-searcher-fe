@@ -10,11 +10,43 @@
 
 .movie-detail-section{
     font-size: 1rem;    
-    .movie-img{
-        display: block;
+    .img-container{
         width: 100%;
         height: 400px;
-        border-radius: 5px;
+        position: relative;
+        label{
+            cursor: pointer;
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            &::before{
+                content: 'Upload image';
+                background-color: #00000080;
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 2rem;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            &:hover::before{
+                opacity: 1;
+            }
+        }
+        input[type="file"]{
+            display: none;
+        }
+        .movie-img{
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+        }
     }
     .movie-title{
         font-size: 1.5rem;

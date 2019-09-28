@@ -9,6 +9,7 @@ import moment from "moment";
 import TagsModalForm from '../modals/TagsModalForm';
 import BlockContentLoader from "../content-loaders/SmallBlockContentLoader";
 import MoviesUpdateActressForm from '../modals/MoviesUpdateActressForm';
+import DynamicBlockContentLoader from "../content-loaders/DynamicBlockContentLoader";
 const ModelAsync = React.lazy(() => import("./section/models-section/ModelAsync"));
 
 export default class MovieDetail extends Component {
@@ -44,13 +45,40 @@ export default class MovieDetail extends Component {
             })
     }
 
+    handleChangeMovieImage = (e) => {
+        const formData = new FormData();
+        formData.append("movieImage", e.target.files[0]);
+        axios({
+            url: prefixUrl + "/movies/upload-movie-image/" + this.state.movieInfo.movieId,
+            data: formData,
+            method: "put",
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(res => {
+                this.setState((state) => {
+                    state.movieInfo["movieImage"] = res.data.movieImage;
+                    return {
+                        movieInfo: state.movieInfo
+                    }
+                })
+            })
+            .catch(console.log);
+    }
+
     renderImage = () => {
         const { movieInfo } = this.state;
         if (movieInfo.movieImage) {
-            return <img src={prefixUrl + movieInfo.movieImage} className="movie-img" alt={movieInfo.movieId} />
+            return (
+                <div className="img-container">
+                    <label htmlFor="movieImage" className="img-select"><img src={prefixUrl + movieInfo.movieImage} className="movie-img" alt={movieInfo.movieId} /></label>
+                    <input type="file" name="movieImage" id="movieImage" onChange={this.handleChangeMovieImage} />
+                </div>
+            )
         }
         else {
-            return null;
+            return <DynamicBlockContentLoader width={600} height={400} />;
         }
     }
 
@@ -133,6 +161,8 @@ export default class MovieDetail extends Component {
         })
     }
 
+
+
     render() {
         const { movieInfo, openModal } = this.state;
         const { movieDetail } = movieInfo;
@@ -145,9 +175,7 @@ export default class MovieDetail extends Component {
                 <div className="detail-content">
                     <Grid container spacing={5}>
                         <Grid item xs={6}>
-                            <div className="img-container">
-                                {this.renderImage()}
-                            </div>
+                            {this.renderImage()}
                         </Grid>
                         <Grid item xs={6}>
                             <div className="movie-info">
