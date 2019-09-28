@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import prefixUrl from "../../../../constant/prefix-url";
-import Model from './Model';
+import ModelAsync from './ModelAsync';
+import ModelSectionContentLoader from "../../../content-loaders/ModelSectionContentLoader";
 
 
 export default class ModelsSectionContainer extends Component {
@@ -28,14 +29,22 @@ export default class ModelsSectionContainer extends Component {
     }
 
     renderModels = () => {
-        return this.state.models.map(model => <Model model={model} key={model.id} />)
+        if (this.state.models.length) {
+            return (
+                <div className="models-section">
+                    {this.state.models.map(model => <ModelAsync modelName={model.name} key={model.id} />)}
+                </div>
+            )
+        }
+        else
+            return <ModelSectionContentLoader />
     }
 
     render() {
         return (
-            <div className="models-section">
+            <>
                 {this.renderModels()}
-            </div>
+            </>
         )
     }
 }

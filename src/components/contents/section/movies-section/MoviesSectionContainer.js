@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import Movie from './Movie';
+import MovieAsync from './MovieAsync';
 import prefixUrl from "../../../../constant/prefix-url";
 import axios from "axios";
+import MovieSectionContentLoader from "../../../content-loaders/MovieSectionContentLoader";
 
 export default class MoviesSectionContainer extends Component {
     constructor(props) {
@@ -27,14 +28,21 @@ export default class MoviesSectionContainer extends Component {
     }
 
     renderMovieList = () => {
-        return this.state.movies.map(movie => <Movie key={movie.id} movie={movie} />)
+        if (this.state.movies.length) {
+            return (
+                <div className="movies-section">
+                    {this.state.movies.map(movie => <MovieAsync key={movie.id} movieId={movie.movieId} />)}
+                </div>
+            )
+        }
+        else return <MovieSectionContentLoader />
     }
 
     render() {
         return (
-            <div className="movies-section">
+            <>
                 {this.renderMovieList()}
-            </div>
+            </>
         )
     }
 }
