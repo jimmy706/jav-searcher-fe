@@ -11,10 +11,10 @@ export default function MovieSectionContentLoader() {
             secondaryColor="#ecebeb">
             <rect x="0" y="0" rx="4" ry="4" width="120" height="120" />
             <rect x="140" y="0" rx="4" ry="4" width="120" height="120" />
-            <rect x="180" y="0" rx="4" ry="4" width="120" height="120" />
-            <rect x="320" y="0" rx="4" ry="4" width="120" height="120" />
-            <rect x="460" y="0" rx="4" ry="4" width="120" height="120" />
-            <rect x="600" y="0" rx="4" ry="4" width="120" height="120" />
+            <rect x="280" y="0" rx="4" ry="4" width="120" height="120" />
+            <rect x="420" y="0" rx="4" ry="4" width="120" height="120" />
+            <rect x="560" y="0" rx="4" ry="4" width="120" height="120" />
+            <rect x="700" y="0" rx="4" ry="4" width="120" height="120" />
         </ContentLoader>
     )
 }

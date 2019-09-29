@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
-import MovieAsync from './MovieAsync';
+import React, { Component, Suspense } from 'react'
 import prefixUrl from "../../../../constant/prefix-url";
 import axios from "axios";
 import MovieSectionContentLoader from "../../../content-loaders/MovieSectionContentLoader";
+import SmallBlockContentLoader from "../../../content-loaders/SmallBlockContentLoader"
+const MovieAsync = React.lazy(() => import("./MovieAsync"))
 
 export default class MoviesSectionContainer extends Component {
     constructor(props) {
@@ -27,11 +28,18 @@ export default class MoviesSectionContainer extends Component {
             .catch(err => console.log(err));
     }
 
+
     renderMovieList = () => {
         if (this.state.movies.length) {
             return (
                 <div className="movies-section">
-                    {this.state.movies.map(movie => <MovieAsync key={movie.id} movieId={movie.movieId} />)}
+                    {this.state.movies.map(movie => {
+                        return (
+                            <Suspense fallback={<SmallBlockContentLoader />} key={movie.id}>
+                                <MovieAsync movieId={movie.movieId} />
+                            </Suspense>
+                        )
+                    })}
                 </div>
             )
         }

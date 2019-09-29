@@ -13,7 +13,7 @@ export default function Model({ model }) {
     const classes = useStyles();
 
     return (
-        <Link to="/" className="model">
+        <Link to={"/models/detail/" + model.id} className="model">
             <Card className={classes.card}>
                 <CardMedia
                     component="img"

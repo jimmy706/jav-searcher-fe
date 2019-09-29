@@ -8,7 +8,7 @@
     }
 }
 
-.movie-detail-section{
+.movie-detail-section, .model-detail-section{
     font-size: 1rem;    
     .img-container{
         width: 100%;
@@ -41,14 +41,14 @@
         input[type="file"]{
             display: none;
         }
-        .movie-img{
+        img{
             display: block;
             width: 100%;
             height: 100%;
             border-radius: 5px;
         }
     }
-    .movie-title{
+    .title{
         font-size: 1.5rem;
         margin-top: 0;
     }
@@ -85,5 +85,14 @@
             color: $white;
             display: block;
         }
+    }
+}
+
+.model-detail-section  {
+    .img-container{
+        height: 300px;
+    }
+    .title{
+        text-transform: capitalize;
     }
 }

@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Landing from './components/contents/Landing';
 import MovieDetail from "./components/contents/MovieDetail";
 import Tags from './components/contents/Tags';
+import ModelDetail from './components/contents/ModelDetail';
 
 export default function AppRouter() {
     return (
@@ -10,6 +11,7 @@ export default function AppRouter() {
             <Route path="/" component={Landing} exact ></Route>
             <Route path="/movies/detail/:movieId" exact component={MovieDetail} />
             <Route path="/tags/all" component={Tags} />
+            <Route path="/models/detail/:modelId" component={ModelDetail} />
         </Switch>
     )
 }

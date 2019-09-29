@@ -5,7 +5,6 @@ import Tag from './section/tags-section/Tag';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import AddIcon from '@material-ui/icons/Add';
 import TagsContentLoader from "../content-loaders/TagsContentLoader";
-import { Link } from "react-router-dom";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Dialog, DialogActions, Button, DialogContent, TextField, Fab, DialogTitle } from "@material-ui/core";
 
@@ -160,9 +159,9 @@ export default class Tags extends Component {
         return (
             <div>
                 <div className="page-header">
-                    <Link to="/" className="back-btn" title="Back to landing page">
+                    <button className="back-btn" title="Back to landing page" onClick={() => this.props.history.goBack()}>
                         <ArrowBackIcon />
-                    </Link>
+                    </button>
                     <span className="page-title">Tags:</span>
                     <div className="interact-area">
                         <Fab color="primary" size="small" title="Add tag type" onClick={() => this.handleOpenModal(null)}>

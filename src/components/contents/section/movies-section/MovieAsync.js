@@ -15,11 +15,15 @@ export default function Movie({ movieId }) {
     const classes = useStyles();
     let [movieImage, setMovieImage] = React.useState("");
     React.useEffect(() => {
+        let isFetched = true; // TODO: handle cancel promise if this component unmouted
         axios(prefixUrl + "/movies/get-movie-image/" + movieId)
             .then(res => {
-                setMovieImage(res.data.movieImage);
+                if (isFetched) {
+                    setMovieImage(res.data.movieImage);
+                }
             })
             .catch(console.log)
+        return () => { isFetched = false }
     }, [movieImage]);
 
     function renderMovieImage() {

@@ -15,17 +15,20 @@ export default function ModelAsync({ modelName }) {
     let [modelInfo, setModelInfo] = useState({});
 
     useEffect(() => {
+        let isFetched = true;  // TODO: handle cancel promise if this component unmouted
         axios.get(prefixUrl + "/models/get-model-by-name?name=" + modelName)
             .then(res => {
-                setModelInfo(res.data);
+                if (isFetched)
+                    setModelInfo(res.data);
             })
             .catch(console.log);
-    }, [modelInfo.id]); // will not recall until modelInfo.id changed
+        return () => { isFetched = false }
+    }, [modelInfo.id]); // TODO: will not recall until modelInfo.id changed
 
     const classes = useStyles();
 
     return (
-        <Link to="/" className="model">
+        <Link to={"/models/detail/" + modelInfo.id} className="model">
             <Card className={classes.card}>
                 {
                     (modelInfo.avatar) ? (<CardMedia

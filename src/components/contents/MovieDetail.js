@@ -101,7 +101,7 @@ export default class MovieDetail extends Component {
         const { movieDetail } = this.state.movieInfo;
         if (movieDetail) {
             return (
-                <h3 className="movie-title">
+                <h3 className="title">
                     <a href={movieDetail.link} target="_blank" rel="noopener noreferrer">{movieDetail.movieName}</a>
                 </h3>
             );
@@ -169,16 +169,16 @@ export default class MovieDetail extends Component {
         const { renderDetailList, closeModal, handleOpenModal } = this;
         return (
             <div className="section-detail movie-detail-section">
-                <Link to="/" className="back-btn" title="Back to landing page">
+                <button className="back-btn" title="Back to landing page" onClick={() => this.props.history.goBack()}>
                     <ArrowBackIcon />
-                </Link>
+                </button>
                 <div className="detail-content">
                     <Grid container spacing={5}>
                         <Grid item xs={6}>
                             {this.renderImage()}
                         </Grid>
                         <Grid item xs={6}>
-                            <div className="movie-info">
+                            <div className="info">
                                 {this.renderTitle()}
                                 <div className="line-break">
                                     <span className="section-title">Movie detail:</span>
