@@ -1,69 +1,12 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, InputBase, Menu, MenuItem, Button } from "@material-ui/core";
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { AppBar, Toolbar, IconButton, Typography, Menu, MenuItem, Button } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from "react-router-dom";
-import SearchIcon from '@material-ui/icons/Search';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
-const headerStyle = makeStyles(theme => ({
-    root: {
-        backgroundColor: "#070D13",
-        flexGrow: 1,
-    },
-    search: {
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(1),
-            width: 'auto',
-        }
-    },
-    searchIcon: {
-        width: theme.spacing(7),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    inputRoot: {
-        color: 'inherit',
-    },
-    inputInput: {
-        padding: theme.spacing(1, 1, 1, 7),
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: 120,
-            '&:focus': {
-                width: 200,
-            },
-        },
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
-    title: {
-        flexGrow: 1,
-        display: 'none',
-        [theme.breakpoints.up('sm')]: {
-            display: 'block',
-        },
-    },
-    menuSelect: {
-        position: 'relative',
-        marginLeft: '15px',
-        textTransform: 'capitalize'
-    },
-}));
+import axios from "axios";
+import headerStyle from "./headerStyle";
+import SearchBox from './SearchBox';
+import prefixUrl from "../../constant/prefix-url";
 
 const options = ['Movie code', 'Model name'];
 
@@ -71,6 +14,7 @@ export default function Header(props) {
     const classes = headerStyle();
     let [openMenu, setOpenMenu] = useState(null);
     let [selectedIndex, setSelectedIndex] = useState(0);
+    let [suggestions, setSuggestions] = useState([]);
 
     function handleClose() {
         setOpenMenu(null);
@@ -87,10 +31,29 @@ export default function Header(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        const form = e.target;
-        const inputValue = form.querySelector("input[name='search']").value;
-        console.log(inputValue);
-        form.reset();
+    }
+
+    function handleInputChange(e) {
+        const val = e.target.value.trim();
+        if (val !== '') {
+            switch (selectedIndex) {
+                case 1:
+                    axios(prefixUrl + "/models/find-by-name?name=" + val)
+                        .then(res => {
+                            setSuggestions(res.data.map(model => ({ title: model.name, img: model.avatar, url: "/models/detail/" + model.id })));
+                        })
+                        .catch(console.log);
+                    break;
+                default:
+                    axios(prefixUrl + "/movies/find-all-by-movieId?movieId=" + val)
+                        .then(res => {
+                            setSuggestions(res.data.map(movie => ({ title: movie.movieId, img: movie.movieImage, url: "/movies/detail/" + movie.movieId })));
+                        })
+                        .catch(console.log);
+                    break;
+            }
+        }
+        setSuggestions([])
     }
 
 
@@ -105,23 +68,9 @@ export default function Header(props) {
                         Home
                     </Link>
                 </Typography>
-                <form className={classes.search} onSubmit={handleSubmit}>
-                    <div className={classes.searchIcon}>
-                        <SearchIcon />
-                    </div>
-                    <InputBase
-                        placeholder="Search..."
-                        classes={{
-                            root: classes.inputRoot,
-                            input: classes.inputInput,
-                        }}
-                        inputProps={{ 'aria-label': 'search' }}
-                        name='search'
-                        autoComplete='off'
-                    />
-                </form>
+                <SearchBox onSubmit={handleSubmit} onChange={handleInputChange} suggestions={suggestions} />
                 <div className={classes.menuSelect}>
-                    <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleOpen}>
+                    <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleOpen} title="change search content">
                         {options[selectedIndex]} < ExpandMoreIcon />
                     </Button>
                     <Menu
