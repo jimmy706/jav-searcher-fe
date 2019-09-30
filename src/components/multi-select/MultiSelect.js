@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import ClearIcon from '@material-ui/icons/Clear';
+import PropTypes from 'prop-types';
 
 
 export default class MultiSelect extends Component {
@@ -99,3 +100,11 @@ export default class MultiSelect extends Component {
     }
 }
 
+
+MultiSelect.propTypes = {
+    placeholder: PropTypes.string,
+    onSelectItem: PropTypes.func,
+    onRemoveItem: PropTypes.func,
+    suggestions: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selected: PropTypes.arrayOf(PropTypes.string).isRequired
+}

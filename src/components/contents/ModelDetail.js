@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import axios from "axios";
 import prefixUrl from "../../constant/prefix-url";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import DynamicBlockContentLoader from "../content-loaders/DynamicBlockContentLoader";
 import { Grid, Dialog } from "@material-ui/core";
 import ModelDetailModalForm from '../modals/ModelDetailModalForm';
+import ModelUpdateMovieInVolveForm from '../modals/ModelUpdateMovieInvolveForm';
+const MovieAsync = React.lazy(() => import("./section/movies-section/MovieAsync"));
 
 
 
@@ -22,7 +24,6 @@ export default class ModelDetail extends Component {
         const modelId = this.props.match.params.modelId;
         axios(prefixUrl + "/models/model-info/" + modelId)
             .then(res => {
-                console.log(res.data);
                 this.setState({ modelInfo: res.data });
             })
             .catch(console.log);
@@ -41,8 +42,21 @@ export default class ModelDetail extends Component {
         })
     }
 
-    handleChangeMovieImage = (e) => {
+    handleChangeAvatar = (e) => {
 
+    }
+
+    handleChangeName = (name) => {
+        this.setState((state) => {
+            state.modelInfo.name = name;
+            return {
+                modelInfo: { ...state.modelInfo }
+            }
+        })
+    }
+
+    handleChangeModelDetail = (modelDetail) => {
+        this.setState({ modelInfo: { ...this.state.modelInfo, modelDetail: { ...modelDetail } } });
     }
 
     renderImage = () => {
@@ -51,7 +65,7 @@ export default class ModelDetail extends Component {
             return (
                 <div className="img-container">
                     <label htmlFor="movieImage" className="img-select"><img src={prefixUrl + modelInfo.avatar} className="movie-img" alt={modelInfo.name} /></label>
-                    <input type="file" name="movieImage" id="movieImage" onChange={this.handleChangeMovieImage} />
+                    <input type="file" name="movieImage" id="movieImage" onChange={this.handleChangeAvatar} />
                 </div>
             )
         }
@@ -70,6 +84,72 @@ export default class ModelDetail extends Component {
             )
         }
         else return null;
+    }
+
+    renderMoviesInvolve = () => {
+        const { modelInfo } = this.state;
+        if (modelInfo["moviesInvolve"]) {
+            return modelInfo["moviesInvolve"].map(movieId => {
+                return (
+                    <Suspense key={movieId} fallback={<DynamicBlockContentLoader width={400} height={100} />}>
+                        <MovieAsync movieId={movieId} />
+                    </Suspense>
+                )
+            })
+        }
+        return null;
+    }
+
+    renderModelDetail = (type) => {
+        const { modelDetail } = this.state.modelInfo;
+        if (modelDetail) {
+            if (type === 'born') {
+                return new Date(modelDetail['born']).toLocaleDateString();
+            }
+            return modelDetail[type];
+        }
+        else return null;
+    }
+
+    updateMovieInvolve = (newMovieInvolveArr) => {
+        this.setState((state) => {
+            state.modelInfo.moviesInvolve = [...newMovieInvolveArr];
+            return {
+                modelInfo: { ...state.modelInfo }
+            }
+        }, () => {
+            console.log(this.state);
+        })
+    }
+
+    renderDialogContent = () => {
+        const { modalType, modelInfo } = this.state;
+        switch (modalType) {
+            case 'INFO':
+                return (
+                    <ModelDetailModalForm
+                        closeModal={this.closeModal}
+                        modelInfo={modelInfo}
+                        handleChangeName={this.handleChangeName}
+                        handleChangeModelDetail={this.handleChangeModelDetail}
+                    />
+                );
+            case 'MOVIES':
+                return (
+                    <ModelUpdateMovieInVolveForm closeModal={this.closeModal} selected={modelInfo.moviesInvolve}
+                        modelId={modelInfo.id}
+                        updateMovieInvolve={this.updateMovieInvolve} />
+                )
+            default:
+                return (
+                    <ModelDetailModalForm
+                        closeModal={this.closeModal}
+                        modelInfo={modelInfo}
+                        handleChangeName={this.handleChangeName}
+                        handleChangeModelDetail={this.handleChangeModelDetail}
+                    />
+                );
+        }
     }
 
     render() {
@@ -93,19 +173,19 @@ export default class ModelDetail extends Component {
                                 </div>
                                 <ul className="info-list">
                                     <li>
-                                        <strong>Born: </strong>
+                                        <strong>Born: </strong>{this.renderModelDetail('born')}
                                     </li>
                                     <li>
-                                        <strong>Bearst: </strong>
+                                        <strong>Breast: </strong>{this.renderModelDetail('breast')}
                                     </li>
                                     <li>
-                                        <strong>Waist: </strong>
+                                        <strong>Waist: </strong>{this.renderModelDetail('waist')}
                                     </li>
                                     <li>
-                                        <strong>Hips: </strong>
+                                        <strong>Hips: </strong>{this.renderModelDetail('hips')}
                                     </li>
                                     <li>
-                                        <strong>Height:</strong>
+                                        <strong>Height: </strong>{this.renderModelDetail('height')}
                                     </li>
                                 </ul>
                             </div>
@@ -114,15 +194,15 @@ export default class ModelDetail extends Component {
                     <div className="wrap-block">
                         <div className="line-break">
                             <span className="section-title">Movie involve:</span>
-                            <button className="transparent-btn"> Edit</button>
+                            <button className="transparent-btn" onClick={() => this.handleOpenModal('MOVIES')}> Edit</button>
                         </div>
                         <ul className="movies-section">
-
+                            {this.renderMoviesInvolve()}
                         </ul>
                     </div>
                 </div>
                 <Dialog open={openModal} onClose={this.closeModal} scroll="paper">
-                    <ModelDetailModalForm closeModal={this.closeModal} />
+                    {this.renderDialogContent()}
                 </Dialog>
             </div>
         )

@@ -18,8 +18,8 @@ function DynamicBlockContentLoader({ width, height }) {
 }
 
 DynamicBlockContentLoader.propTypes = {
-    height: PropTypes.number,
-    width: PropTypes.number
+    height: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired
 }
 
 export default DynamicBlockContentLoader;

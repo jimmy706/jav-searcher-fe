@@ -4,6 +4,7 @@ import prefixUrl from "../../../../constant/prefix-url";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import NormalBlockContentLoader from "../../../content-loaders/NormalBlockContentLoader";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
     card: {
@@ -46,4 +47,8 @@ export default function ModelAsync({ modelName }) {
             </Card>
         </Link>
     )
+}
+
+ModelAsync.propTypes = {
+    modelName: PropTypes.string
 }

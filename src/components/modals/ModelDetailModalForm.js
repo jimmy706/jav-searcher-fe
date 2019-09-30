@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { DialogActions, DialogContent, DialogTitle, Button, TextField, Fab, Grid } from "@material-ui/core";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
-
+import axios from 'axios';
+import prefixURL from '../../constant/prefix-url';
 
 export default class ModelDetailModalForm extends Component {
     constructor(props) {
@@ -17,21 +18,69 @@ export default class ModelDetailModalForm extends Component {
         }
     }
 
+    componentDidMount() {
+        const { name, modelDetail } = this.props.modelInfo;
+        if (modelDetail) {
+            this.setState({
+                name: name,
+                born: new Date(modelDetail.born),
+                waist: modelDetail.waist,
+                hips: modelDetail.hips,
+                height: modelDetail.height,
+                breast: modelDetail.breast
+            })
+        }
+        else {
+            this.setState({ name: name });
+        }
+    }
+
     handleSubmit = () => {
+        const { id } = this.props.modelInfo;
+        const { name, born, breast, waist, hips, height } = this.state;
 
+        axios({
+            url: prefixURL + "/models/update-model-info/" + id,
+            method: 'put',
+            data: {
+                born: born,
+                breast: parseInt(breast),
+                waist: parseInt(waist),
+                hips: parseInt(hips),
+                height: parseInt(height)
+            }
+        })
+            .then(res => {
+                this.props.handleChangeModelDetail(res.data.modelDetail);
+                if (name !== this.props.modelInfo.name) {
+                    axios({
+                        url: prefixURL + "/models/change-name/" + id,
+                        params: { name: name },
+                        method: 'put'
+                    })
+                        .then(result => {
+                            this.props.handleChangeName(result.data.name);
+                            this.props.closeModal();
+                        })
+                }
+                else {
+                    this.props.closeModal();
+                }
+            })
+            .catch(console.log);
     }
 
-    handleChangeValueInput = () => {
-
+    handleChangeValueInput = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
     }
 
-    handleChangeDate = () => {
-
+    handleChangeDate = (date) => {
+        this.setState({ born: date })
     }
 
     render() {
         const { closeModal } = this.props;
-        const { born } = this.state;
+        const { name, born, breast, waist, hips, height } = this.state;
         return (
             <div className="modal">
                 <DialogTitle>Edit model info:</DialogTitle>
@@ -46,19 +95,21 @@ export default class ModelDetailModalForm extends Component {
                         autoComplete="off"
                         autoFocus
                         onChange={this.handleChangeValueInput}
+                        value={name}
                     />
                     <Grid container spacing={3}>
                         <Grid item xs={6}>
                             <TextField
                                 autoFocus
                                 margin="normal"
-                                id="bearst"
-                                label="Bearst"
+                                id="breast"
+                                label="Breast"
                                 type="number"
                                 fullWidth
-                                name="bearst"
+                                name="breast"
                                 autoComplete="off"
                                 onChange={this.handleChangeValueInput}
+                                value={breast}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -72,6 +123,7 @@ export default class ModelDetailModalForm extends Component {
                                 name="waist"
                                 autoComplete="off"
                                 onChange={this.handleChangeValueInput}
+                                value={waist}
                             />
                         </Grid>
                     </Grid>
@@ -87,6 +139,7 @@ export default class ModelDetailModalForm extends Component {
                                 name="hips"
                                 autoComplete="off"
                                 onChange={this.handleChangeValueInput}
+                                value={hips}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -100,6 +153,7 @@ export default class ModelDetailModalForm extends Component {
                                 name="height"
                                 autoComplete="off"
                                 onChange={this.handleChangeValueInput}
+                                value={height}
                             />
                         </Grid>
                     </Grid>

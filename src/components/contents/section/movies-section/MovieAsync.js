@@ -4,6 +4,7 @@ import { Card, CardContent, Typography, CardMedia, makeStyles } from "@material-
 import prefixUrl from "../../../../constant/prefix-url";
 import axios from "axios";
 import DynamicBlockContentLoader from "../../../content-loaders/DynamicBlockContentLoader";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
     card: {
@@ -11,7 +12,7 @@ const useStyles = makeStyles({
     }
 });
 
-export default function Movie({ movieId }) {
+export default function MovieAsync({ movieId }) {
     const classes = useStyles();
     let [movieImage, setMovieImage] = React.useState("");
     React.useEffect(() => {
@@ -53,4 +54,8 @@ export default function Movie({ movieId }) {
             </Card>
         </Link>
     )
+}
+
+MovieAsync.propTypes = {
+    movieId: PropTypes.string
 }
