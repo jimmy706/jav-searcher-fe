@@ -4,10 +4,13 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import axios from "axios";
 import prefixUrl from "../../constant/prefix-url";
+import { connect } from "react-redux";
+import { openSnackbarAction } from "../../actions/snackbar.action";
+
 
 let studios = [];
 
-export default class MovieDetailModalForm extends Component {
+class MovieDetailModalForm extends Component {
     constructor(props) {
         super(props);
 
@@ -68,11 +71,11 @@ export default class MovieDetailModalForm extends Component {
             }
         })
             .then(res => {
-                console.log(res);
-                this.props.changeMovieInfo("movieDetail", { movieName, studio, releaseDate, content, link, length })
+                this.props.changeMovieInfo("movieDetail", { movieName, studio, releaseDate, content, link, length });
+                this.props.openSnackbar("Movie detail updated", "success");
                 this.props.closeModal();
             })
-            .catch(console.log);
+            .catch(err => this.props.openSnackbar(err.response.data.message, "error"));
     }
 
     renderStudiosOption = () => {
@@ -180,3 +183,11 @@ export default class MovieDetailModalForm extends Component {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        openSnackbar: (mess, variant) => dispatch(openSnackbarAction(mess, variant))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(MovieDetailModalForm);

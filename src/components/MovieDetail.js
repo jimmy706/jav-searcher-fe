@@ -1,16 +1,16 @@
 import React, { Component, Suspense } from 'react';
 import axios from "axios";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import prefixUrl from "../../constant/prefix-url";
+import prefixUrl from "../constant/prefix-url";
 import { Grid, Dialog } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import MovieDetailModalForm from "../modals/MovieDetailModalForm";
+import MovieDetailModalForm from "./modals/MovieDetailModalForm";
 import moment from "moment";
-import TagsModalForm from '../modals/TagsModalForm';
-import BlockContentLoader from "../content-loaders/SmallBlockContentLoader";
-import MoviesUpdateActressForm from '../modals/MoviesUpdateActressForm';
-import DynamicBlockContentLoader from "../content-loaders/DynamicBlockContentLoader";
-const ModelAsync = React.lazy(() => import("./section/models-section/ModelAsync"));
+import TagsModalForm from './modals/TagsModalForm';
+import BlockContentLoader from "./content-loaders/SmallBlockContentLoader";
+import MoviesUpdateActressForm from './modals/MoviesUpdateActressForm';
+import DynamicBlockContentLoader from "./content-loaders/DynamicBlockContentLoader";
+const ModelAsync = React.lazy(() => import("./contents/section/models-section/ModelAsync"));
 
 export default class MovieDetail extends Component {
     constructor(props) {

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import axios from "axios";
-import prefixUrl from "../../constant/prefix-url";
-import Tag from './section/tags-section/Tag';
+import prefixUrl from "../constant/prefix-url";
+import Tag from './contents/section/tags-section/Tag';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import AddIcon from '@material-ui/icons/Add';
-import TagsContentLoader from "../content-loaders/TagsContentLoader";
+import TagsContentLoader from "./content-loaders/TagsContentLoader";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Dialog, DialogActions, Button, DialogContent, TextField, Fab, DialogTitle } from "@material-ui/core";
 

@@ -3,11 +3,13 @@ import { DialogActions, DialogContent, DialogTitle, Button, Fab } from "@materia
 import axios from "axios";
 import prefixUrl from "../../constant/prefix-url";
 import MultiSelect from '../multi-select/MultiSelect';
+import { connect } from "react-redux";
+import { openSnackbarAction } from "../../actions/snackbar.action";
 
 // TODO: temp variable to contain all tag
 let allTags = [];
 
-export default class TagsModalForm extends Component {
+class TagsModalForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -40,7 +42,7 @@ export default class TagsModalForm extends Component {
     }
 
     handleSubmit = () => {
-
+        const { openSnackbar } = this.props;
         axios({
             url: prefixUrl + "/movies/set-tags/" + this.props.movieId,
             params: {
@@ -50,9 +52,12 @@ export default class TagsModalForm extends Component {
         })
             .then(res => {
                 this.props.changeMovieInfo("tags", this.state.selected);
+                openSnackbar("Tags updated", "success");
                 this.props.closeModal();
             })
-            .catch(console.log);
+            .catch(err => {
+                openSnackbar(err.response.data.message, 'error');
+            });
     }
 
     render() {
@@ -80,4 +85,10 @@ export default class TagsModalForm extends Component {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        openSnackbar: (mess, variant) => dispatch(openSnackbarAction(mess, variant))
+    }
+}
 
+export default connect(null, mapDispatchToProps)(TagsModalForm);

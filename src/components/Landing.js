@@ -1,8 +1,8 @@
 import React from 'react';
-import sectionTypes from "../../constant/sections";
-import SectionContainer from './section/SectionContainer';
-import ModelsSectionContainer from './section/models-section/ModelsSectionContainer';
-import MoviesSectionContainer from './section/movies-section/MoviesSectionContainer';
+import sectionTypes from "../constant/sections";
+import SectionContainer from './contents/section/SectionContainer';
+import ModelsSectionContainer from './contents/section/models-section/ModelsSectionContainer';
+import MoviesSectionContainer from './contents/section/movies-section/MoviesSectionContainer';
 
 export default function Landing() {
     return (

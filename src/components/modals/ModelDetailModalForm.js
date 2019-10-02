@@ -4,8 +4,10 @@ import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import axios from 'axios';
 import prefixURL from '../../constant/prefix-url';
+import { connect } from "react-redux";
+import { openSnackbarAction } from "../../actions/snackbar.action";
 
-export default class ModelDetailModalForm extends Component {
+class ModelDetailModalForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -51,6 +53,7 @@ export default class ModelDetailModalForm extends Component {
             }
         })
             .then(res => {
+                this.props.openSnackbar("Model detail updated", "success");
                 this.props.handleChangeModelDetail(res.data.modelDetail);
                 if (name !== this.props.modelInfo.name) {
                     axios({
@@ -62,12 +65,13 @@ export default class ModelDetailModalForm extends Component {
                             this.props.handleChangeName(result.data.name);
                             this.props.closeModal();
                         })
+                        .catch(err => this.props.openSnackbar(err.response.data.message, "error"))
                 }
                 else {
                     this.props.closeModal();
                 }
             })
-            .catch(console.log);
+            .catch(err => this.props.openSnackbar(err.response.data.message, "error"));
     }
 
     handleChangeValueInput = (e) => {
@@ -187,3 +191,11 @@ export default class ModelDetailModalForm extends Component {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        openSnackbar: (mess, variant) => dispatch(openSnackbarAction(mess, variant))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(ModelDetailModalForm);

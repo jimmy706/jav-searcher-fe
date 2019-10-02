@@ -3,8 +3,10 @@ import { DialogActions, DialogContent, DialogTitle, Button, Fab } from "@materia
 import axios from "axios";
 import prefixUrl from "../../constant/prefix-url";
 import MultiSelect from '../multi-select/MultiSelect';
+import { connect } from "react-redux";
+import { openSnackbarAction } from "../../actions/snackbar.action";
 
-export default class MoviesUpdateActressForm extends Component {
+class MoviesUpdateActressForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -45,9 +47,10 @@ export default class MoviesUpdateActressForm extends Component {
         })
             .then(res => {
                 this.props.changeMovieInfo("actresses", this.state.selectedModels);
+                this.props.openSnackbar("Actresses updated", "success");
                 this.props.closeModal();
             })
-            .catch(console.log);
+            .catch(err => this.props.openSnackbar(err.response.data.message, 'error'));
     }
 
 
@@ -77,3 +80,11 @@ export default class MoviesUpdateActressForm extends Component {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        openSnackbar: (mess, variant) => dispatch(openSnackbarAction(mess, variant))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(MoviesUpdateActressForm);

@@ -1,12 +1,12 @@
 import React, { Component, Suspense } from 'react';
 import axios from "axios";
-import prefixUrl from "../../constant/prefix-url";
+import prefixUrl from "../constant/prefix-url";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import DynamicBlockContentLoader from "../content-loaders/DynamicBlockContentLoader";
+import DynamicBlockContentLoader from "./content-loaders/DynamicBlockContentLoader";
 import { Grid, Dialog } from "@material-ui/core";
-import ModelDetailModalForm from '../modals/ModelDetailModalForm';
-import ModelUpdateMovieInVolveForm from '../modals/ModelUpdateMovieInvolveForm';
-const MovieAsync = React.lazy(() => import("./section/movies-section/MovieAsync"));
+import ModelDetailModalForm from './modals/ModelDetailModalForm';
+import ModelUpdateMovieInVolveForm from './modals/ModelUpdateMovieInvolveForm';
+const MovieAsync = React.lazy(() => import("./contents/section/movies-section/MovieAsync"));
 
 
 
@@ -43,7 +43,28 @@ export default class ModelDetail extends Component {
     }
 
     handleChangeAvatar = (e) => {
+        const modelId = this.props.match.params.modelId;
+        const formData = new FormData();
+        formData.append("avatar", e.target.files[0]);
+        axios({
+            url: prefixUrl + "/models/upload-avatar/" + modelId,
+            method: 'put',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then(res => {
+                this.setState((state) => {
+                    return {
+                        modelInfo: { ...state.modelInfo, avatar: res.data.avatar }
+                    }
+                })
 
+            })
+            .catch(err => {
+                console.log(err.response);
+            })
     }
 
     handleChangeName = (name) => {

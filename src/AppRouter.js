@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch } from "react-router-dom";
-import Landing from './components/contents/Landing';
-import MovieDetail from "./components/contents/MovieDetail";
-import Tags from './components/contents/Tags';
-import ModelDetail from './components/contents/ModelDetail';
+import Landing from './components/Landing';
+import MovieDetail from "./components/MovieDetail";
+import Tags from './components/Tags';
+import ModelDetail from './components/ModelDetail';
 
 export default function AppRouter() {
     return (

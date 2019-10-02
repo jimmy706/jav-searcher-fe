@@ -3,10 +3,12 @@ import { DialogActions, DialogContent, DialogTitle, Button, TextField, Checkbox,
 import DragNDrop from "../dragndrop/DragNDrop";
 import axios from "axios";
 import prefixUrl from "../../constant/prefix-url";
+import { connect } from "react-redux";
+import { openSnackbarAction } from "../../actions/snackbar.action";
 
 
 
-export default class ActressModalForm extends Component {
+class ActressModalForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,6 +21,7 @@ export default class ActressModalForm extends Component {
 
     handleAddModel = () => {
         const { name, url, avatar, useUrl } = this.state;
+        const { openSnackbar } = this.props;
         if (useUrl) {
             axios({
                 url: prefixUrl + "/models/add-model-with-url-avatar",
@@ -29,10 +32,10 @@ export default class ActressModalForm extends Component {
                 method: 'POST'
             })
                 .then(res => {
-                    console.log(res.data);
+                    openSnackbar("Create model successfully", "success");
                     this.props.handleClose();
                 })
-                .catch(err => console.log(err));
+                .catch(err => openSnackbar(err.response.data.message, 'error'));
         }
         else {
             const formData = new FormData();
@@ -47,10 +50,10 @@ export default class ActressModalForm extends Component {
                 }
             })
                 .then(res => {
-                    console.log(res.data);
+                    openSnackbar("Create model successfully", "success");
                     this.props.handleClose();
                 })
-                .catch(err => console.log(err));
+                .catch(err => openSnackbar(err.response.data.message, 'error'));
         }
     }
 
@@ -125,3 +128,12 @@ export default class ActressModalForm extends Component {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        openSnackbar: (mess, variant) => dispatch(openSnackbarAction(mess, variant))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(ActressModalForm);
+

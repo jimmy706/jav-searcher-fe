@@ -5,6 +5,8 @@ import App from './App';
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import blue from '@material-ui/core/colors/blue';
 import indigo from "@material-ui/core/colors/indigo";
+import { Provider } from "react-redux";
+import store from "./store";
 
 
 
@@ -17,6 +19,8 @@ const theme = createMuiTheme({
 })
 
 ReactDOM.render(
-    <MuiThemeProvider theme={theme}>
-        <App />
-    </MuiThemeProvider>, document.getElementById('root'));
+    <Provider store={store}>
+        <MuiThemeProvider theme={theme}>
+            <App />
+        </MuiThemeProvider>
+    </Provider>, document.getElementById('root'));

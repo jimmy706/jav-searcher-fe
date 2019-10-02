@@ -76,7 +76,7 @@ export default class ModelUpdateMovieInVolveForm extends Component {
 
 
 ModelUpdateMovieInVolveForm.propTypes = {
-    closeModal: PropTypes.func,
+    closeModal: PropTypes.func.isRequired,
     selected: PropTypes.arrayOf(PropTypes.string).isRequired,
     modelId: PropTypes.string.isRequired
 }

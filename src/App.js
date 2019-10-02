@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Dialog, Container } from '@material-ui/core';
 import MovieModalForm from "./components/modals/MovieModalForm";
 import ActressModalForm from "./components/modals/ActressModalForm";
+import SnackbarComp from './components/snackbar/SnackbarComp';
 
 let modalType = null;
 
@@ -64,12 +65,10 @@ function App() {
           </main>
         </div>
       </div>
-
-
-
       <Dialog open={openModal} onClose={handleClose} aria-labelledby="form-dialog-title" scroll={'paper'}>
         {renderModalContent()}
       </Dialog>
+      <SnackbarComp />
     </BrowserRouter>
   );
 }
