@@ -141,10 +141,10 @@ export default class MovieDetail extends Component {
     renderModels = () => {
         const { movieInfo } = this.state;
         if (movieInfo["actresses"]) {
-            return movieInfo["actresses"].map(modelName => {
+            return movieInfo["actresses"].map(modelId => {
                 return (
-                    <Suspense key={modelName} fallback={<BlockContentLoader />}>
-                        <ModelAsync modelName={modelName} />
+                    <Suspense key={modelId} fallback={<BlockContentLoader />}>
+                        <ModelAsync modelId={modelId} />
                     </Suspense>
                 )
             });

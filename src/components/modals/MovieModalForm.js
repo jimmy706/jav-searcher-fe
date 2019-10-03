@@ -48,7 +48,7 @@ class MovieModalForm extends Component {
                 }
             })
                 .then(res => {
-                    openSnackbar("Create model successfully", "success");
+                    openSnackbar("Create movie successfully", "success");
                     this.props.handleClose();
                 })
                 .catch(err => openSnackbar(err.response.data.message, 'error'));

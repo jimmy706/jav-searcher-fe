@@ -6,13 +6,32 @@ import MultiSelect from '../multi-select/MultiSelect';
 import { connect } from "react-redux";
 import { openSnackbarAction } from "../../actions/snackbar.action";
 
+
 class MoviesUpdateActressForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             models: [],
-            selectedModels: this.props.selected,
+            selectedModels: [], // FIXME: handle change selected list from model's id to model's name
         }
+    }
+
+    async componentDidMount() {
+        let selectedNames = [];
+        const { selected } = this.props;
+        // eslint-disable-next-line 
+        for (let modelId of selected) {
+            let modelName = await axios(prefixUrl + "/models/get-model-name?modelId=" + modelId);
+            selectedNames.push(modelName.data);
+        }
+        this.setState({
+            selectedModels: selectedNames.map(model => {
+                return {
+                    title: model.name,
+                    value: model.id
+                }
+            })
+        })
     }
 
     selectModel = (selected) => {
@@ -28,25 +47,34 @@ class MoviesUpdateActressForm extends Component {
     }
 
     onChangeInput = (val) => {
-        axios.get(prefixUrl + "/models/find-by-name?name=" + val)
-            .then(res => {
-                this.setState({
-                    models: res.data.map(model => model.name)
+        if (val !== '') {
+            axios.get(prefixUrl + "/models/find-by-name?name=" + val)
+                .then(res => {
+                    this.setState({
+                        models: res.data.map(model => {
+                            return {
+                                title: model.name,
+                                value: model.id
+                            }
+                        }),
+                    })
                 })
-            })
-            .catch(console.log);
+                .catch(console.log);
+        }
     }
 
     handleSubmit = () => {
+        const { selectedModels } = this.state;
+        let modelNameToIds = selectedModels.map(model => model.value);
         axios({
             url: prefixUrl + "/movies/set-actresses/" + this.props.movieId,
             params: {
-                models: this.state.selectedModels
+                models: modelNameToIds
             },
             method: "put"
         })
             .then(res => {
-                this.props.changeMovieInfo("actresses", this.state.selectedModels);
+                this.props.changeMovieInfo("actresses", modelNameToIds);
                 this.props.openSnackbar("Actresses updated", "success");
                 this.props.closeModal();
             })

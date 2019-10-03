@@ -14,7 +14,11 @@ export default class MultiSelect extends Component {
         }
     }
 
-
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        if (nextProps.selected.length !== this.state.selected.length) {
+            this.setState({ selected: nextProps.selected });
+        }
+    }
 
     handleSearchOption = (e) => {
         let val = e.target.value.trim();
@@ -30,7 +34,7 @@ export default class MultiSelect extends Component {
 
         if (val !== "") {
             this.setState({
-                suggestions: suggestions.filter(item => item.toUpperCase().includes(val.toUpperCase())).slice(0, 6)
+                suggestions: suggestions.filter(item => item.title.toUpperCase().includes(val.toUpperCase())).slice(0, 6)
             })
         }
         else {
@@ -39,23 +43,30 @@ export default class MultiSelect extends Component {
     }
 
     handleSelectItem = (e) => {
-        const itemSelect = e.target.dataset.value;
-        if (!this.state.selected.includes(itemSelect)) {
+        const value = e.target.dataset.value;
+        const title = e.target.textContent;
+        const itemSelect = { title, value };
+        if (!this.checkContentItem(this.state.selected, itemSelect)) { // TODO: if selected didn't contain item then push it into array
             this.setState((state) => {
                 return {
-                    selected: [...state.selected, itemSelect],
+                    selected: state.selected.concat(itemSelect),
                     suggestions: state.suggestions.filter(item => item !== itemSelect)
                 }
             }, () => {
+                console.log(this.state);
                 this.props.onSelectItem(this.state.selected);
             })
         }
     }
 
+    checkContentItem(arr, searchItem) {
+        return !!arr.find(item => item.title === searchItem.title);
+    }
+
     handleRemoveItem = (itemRemove) => {
         this.setState((state) => {
             return {
-                selected: state.selected.filter(a => a !== itemRemove),
+                selected: state.selected.filter(a => a.title !== itemRemove.title),
                 suggestions: [...state.suggestions, itemRemove]
             }
         }, () => {
@@ -64,14 +75,14 @@ export default class MultiSelect extends Component {
     }
 
     renderSelectedItem = () => {
-        return this.state.selected.map(item => (
-            <li className="selected-item" key={item}>
-                <span className="rm-btn" onClick={() => this.handleRemoveItem(item)}><ClearIcon /></span> {item}
+        return this.state.selected.map((item) => (
+            <li className="selected-item" key={item.title}>
+                <span className="rm-btn" onClick={() => this.handleRemoveItem(item)}><ClearIcon /></span> {item.title}
             </li>))
     }
 
     renderOptions = () => {
-        return this.state.suggestions.map((item, i) => <li key={i} data-value={item} className="opt" onClick={this.handleSelectItem}>{item}</li>)
+        return this.state.suggestions.map((item, i) => <li key={i} data-value={item.value} className="opt" onClick={this.handleSelectItem}>{item.title}</li>)
     }
 
     render() {
@@ -105,6 +116,6 @@ MultiSelect.propTypes = {
     placeholder: PropTypes.string,
     onSelectItem: PropTypes.func,
     onRemoveItem: PropTypes.func,
-    suggestions: PropTypes.arrayOf(PropTypes.string).isRequired,
-    selected: PropTypes.arrayOf(PropTypes.string).isRequired
+    suggestions: PropTypes.array.isRequired,
+    selected: PropTypes.array.isRequired
 }

@@ -75,7 +75,9 @@ class MovieDetailModalForm extends Component {
                 this.props.openSnackbar("Movie detail updated", "success");
                 this.props.closeModal();
             })
-            .catch(err => this.props.openSnackbar(err.response.data.message, "error"));
+            .catch(err => {
+                this.props.openSnackbar(err.response.data.message, "error")
+            });
     }
 
     renderStudiosOption = () => {

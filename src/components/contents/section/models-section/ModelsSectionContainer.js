@@ -32,7 +32,7 @@ export default class ModelsSectionContainer extends Component {
         if (this.state.models.length) {
             return (
                 <div className="models-section">
-                    {this.state.models.map(model => <ModelAsync modelName={model.name} key={model.id} />)}
+                    {this.state.models.map(model => <ModelAsync key={model.id} modelId={model.id} />)}
                 </div>
             )
         }

@@ -29,15 +29,15 @@ class TagsModalForm extends Component {
 
     selectItem = (selectedArr) => {
         this.setState({
-            selected: [...selectedArr],
-            tags: allTags.filter(tag => !selectedArr.find(a => a === tag))
+            selected: selectedArr.map(item => item.title),
+            tags: allTags.filter(tag => !selectedArr.find(a => a.title === tag))
         })
     }
 
     removeItem = (removedArr) => {
         this.setState({
-            selected: [...removedArr],
-            tags: allTags.filter(tag => !removedArr.find(a => a === tag)) // add to tags for suggestion props
+            selected: removedArr.map(item => item.title),
+            tags: allTags.filter(tag => !removedArr.find(a => a.title === tag)) // add to tags for suggestion props
         })
     }
 
@@ -66,11 +66,11 @@ class TagsModalForm extends Component {
             <div className="modal">
                 <DialogTitle>Update tags:</DialogTitle>
                 <DialogContent>
-                    {tags.length ? <MultiSelect suggestions={tags}
+                    {tags.length ? <MultiSelect suggestions={tags.map(tag => ({ title: tag, value: tag }))}
                         placeholder="Type to search tag"
                         onSelectItem={this.selectItem}
                         onRemoveItem={this.removeItem}
-                        selected={selected} /> : null}
+                        selected={selected.map(tag => ({ title: tag, value: tag }))} /> : null}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.props.closeModal} color="default">

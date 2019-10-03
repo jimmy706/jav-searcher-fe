@@ -12,18 +12,19 @@ const useStyles = makeStyles({
     }
 });
 
-export default function ModelAsync({ modelName }) {
+export default function ModelAsync({ modelId }) {
     let [modelInfo, setModelInfo] = useState({});
 
     useEffect(() => {
         let isFetched = true;  // TODO: handle cancel promise if this component unmouted
-        axios.get(prefixUrl + "/models/get-model-by-name?name=" + modelName)
+        axios.get(prefixUrl + "/models/get-model-avatar?modelId=" + modelId)
             .then(res => {
                 if (isFetched)
                     setModelInfo(res.data);
             })
             .catch(console.log);
         return () => { isFetched = false }
+        // eslint-disable-next-line 
     }, [modelInfo.id]); // TODO: will not recall until modelInfo.id changed
 
     const classes = useStyles();
@@ -41,7 +42,7 @@ export default function ModelAsync({ modelName }) {
                 }
                 <CardContent>
                     <Typography component="p">
-                        {modelName}
+                        {modelInfo.name ? modelInfo.name : null}
                     </Typography>
                 </CardContent>
             </Card>
@@ -50,5 +51,5 @@ export default function ModelAsync({ modelName }) {
 }
 
 ModelAsync.propTypes = {
-    modelName: PropTypes.string
+    modelId: PropTypes.string.isRequired
 }

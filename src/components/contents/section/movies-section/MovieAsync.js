@@ -25,6 +25,7 @@ export default function MovieAsync({ movieId }) {
             })
             .catch(console.log)
         return () => { isFetched = false }
+        // eslint-disable-next-line 
     }, [movieImage]);
 
     function renderMovieImage() {
