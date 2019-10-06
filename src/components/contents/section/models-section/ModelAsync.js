@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
     card: {
-        background: "#040E17",
+        background: "#2C2C2C",
     }
 });
 

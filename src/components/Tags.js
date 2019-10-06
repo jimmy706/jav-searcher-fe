@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import axios from "axios";
 import prefixUrl from "../constant/prefix-url";
 import Tag from './contents/section/tags-section/Tag';
-import AddBoxIcon from '@material-ui/icons/AddBox';
 import AddIcon from '@material-ui/icons/Add';
 import TagsContentLoader from "./content-loaders/TagsContentLoader";
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Dialog, DialogActions, Button, DialogContent, TextField, Fab, DialogTitle } from "@material-ui/core";
+import TagPageContentLoader from "./content-loaders/TagPageContentLoader";
+const TagContainer = React.lazy(() => import("./contents/section/tags-section/TagContainer"));
 
 
 export default class Tags extends Component {
@@ -23,6 +24,7 @@ export default class Tags extends Component {
             openModal: false
         })
     }
+
 
     handleOpenModal = (tagTypeId) => {
         this.setState({ tagTypeId, openModal: true })
@@ -89,30 +91,14 @@ export default class Tags extends Component {
 
     renderTagType = () => {
         const { tagTypes } = this.state;
-        if (tagTypes.length === 0) {
-            return (<>
-                <TagsContentLoader /> <TagsContentLoader />
-            </>)
+        if (tagTypes.length) {
+            return tagTypes.map(tagType => (
+                <Suspense key={tagType.id} fallback={<TagsContentLoader />}>
+                    <TagContainer tagType={tagType} handleOpenModal={this.handleOpenModal} />
+                </Suspense>
+            ))
         }
-        else {
-            return tagTypes.map(tagType => {
-                return (
-                    <div className="section-container" key={tagType.id}>
-                        <div className="title-wrapper">
-                            <span className="section-title" title={tagType.type}>
-                                {tagType.type}
-                            </span>
-                            <button className="transparent-btn" onClick={() => this.handleOpenModal(tagType.id)}>
-                                <AddBoxIcon />
-                            </button>
-                        </div>
-                        <div className="section-content">
-                            {this.renderTags(tagType.tags)}
-                        </div>
-                    </div>
-                )
-            })
-        }
+        return <TagPageContentLoader />;
     }
 
     renderTags = (tags) => {

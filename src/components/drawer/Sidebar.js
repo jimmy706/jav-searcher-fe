@@ -24,7 +24,7 @@ export default class Sidebar extends Component {
         axios.get(prefixUrl + "/studios/all")
             .then((studioData) => {
                 this.setState({
-                    studios: studioData.data.map(studio => studio.stdudioName).slice(0, 5)
+                    studios: studioData.data.map(studio => studio.studioName).slice(0, 5)
                 })
             })
             .catch(err => console.log(err));
@@ -98,7 +98,7 @@ export default class Sidebar extends Component {
                         <div className="line" />
                         <ul className="sub-list">
                             <li>
-                                <Link className="section-guide" to="/" title="Studios">
+                                <Link className="section-guide" to="/studios/all" title="Studios">
                                     <MovieIcon /> Studios:
                                 </Link>
                             </li>

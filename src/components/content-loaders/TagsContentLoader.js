@@ -1,5 +1,7 @@
 import React from 'react';
 import ContentLoader from "react-content-loader";
+import { primaryColor, secondaryColor } from "./ContentLoaderColors";
+
 
 export default function TagsContentLoader() {
     return (
@@ -7,8 +9,8 @@ export default function TagsContentLoader() {
             height={150}
             width={800}
             speed={2}
-            primaryColor="#c0c0c0"
-            secondaryColor="#ecebeb">
+            primaryColor={primaryColor}
+            secondaryColor={secondaryColor}>
             <rect x="0" y="10" rx="4" ry="4" width="100" height="20" />
             <rect x="0" y="35" rx="0" ry="0" width="100%" height="1" />
             <rect x="780" y="14" rx="0" ry="0" width="12" height="12" />

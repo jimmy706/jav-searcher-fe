@@ -38,7 +38,7 @@ class MovieDetailModalForm extends Component {
     componentDidMount() {
         axios.get(prefixUrl + "/studios/all")
             .then(res => {
-                studios = res.data.map(studio => studio.stdudioName);
+                studios = res.data.map(studio => studio.studioName);
             })
     }
 

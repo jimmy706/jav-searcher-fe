@@ -12,7 +12,7 @@ class MoviesUpdateActressForm extends Component {
         super(props);
         this.state = {
             models: [],
-            selectedModels: [], // FIXME: handle change selected list from model's id to model's name
+            selectedModels: [],
         }
     }
 
