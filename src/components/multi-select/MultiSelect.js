@@ -50,10 +50,9 @@ export default class MultiSelect extends Component {
             this.setState((state) => {
                 return {
                     selected: state.selected.concat(itemSelect),
-                    suggestions: state.suggestions.filter(item => item !== itemSelect)
+                    suggestions: state.suggestions.filter(item => item.title !== itemSelect.title)
                 }
             }, () => {
-                console.log(this.state);
                 this.props.onSelectItem(this.state.selected);
             })
         }

@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, CardMedia, makeStyles } from "@material-
 import prefixUrl from "../../../../constant/prefix-url";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import NormalBlockContentLoader from "../../../content-loaders/NormalBlockContentLoader";
+import DynamicBlockContentLoader from "../../../content-loaders/DynamicBlockContentLoader";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
@@ -38,7 +38,7 @@ export default function ModelAsync({ modelId }) {
                         alt={modelInfo.name}
                         image={prefixUrl + modelInfo.avatar}
                         title={modelInfo.name}
-                    />) : <NormalBlockContentLoader />
+                    />) : <DynamicBlockContentLoader width={250} height={120} />
                 }
                 <CardContent>
                     <Typography component="p">

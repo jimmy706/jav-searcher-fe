@@ -194,8 +194,8 @@ export default class MovieDetail extends Component {
                                         {movieDetail ? <Link to={movieDetail["studio"] ? ("/studios/" + movieDetail["studio"]) : "/"}>{renderDetailList("studio")}</Link> : null}
                                     </li>
                                     <li>
-                                        <strong>Length: </strong>
-                                        <span>{renderDetailList("length")} min</span>
+                                        <strong>Duration: </strong>
+                                        <span>{renderDetailList("length")} mins</span>
                                     </li>
                                     <li>
                                         <strong>Description:</strong>

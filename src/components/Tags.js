@@ -4,9 +4,9 @@ import prefixUrl from "../constant/prefix-url";
 import Tag from './contents/section/tags-section/Tag';
 import AddIcon from '@material-ui/icons/Add';
 import TagsContentLoader from "./content-loaders/TagsContentLoader";
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Dialog, DialogActions, Button, DialogContent, TextField, Fab, DialogTitle } from "@material-ui/core";
 import TagPageContentLoader from "./content-loaders/TagPageContentLoader";
+import PageHeader from "./contents/headers/PageHeader";
 const TagContainer = React.lazy(() => import("./contents/section/tags-section/TagContainer"));
 
 
@@ -144,17 +144,11 @@ export default class Tags extends Component {
         const { openModal, tagTypeId } = this.state;
         return (
             <div>
-                <div className="page-header">
-                    <button className="back-btn" title="Back to landing page" onClick={() => this.props.history.goBack()}>
-                        <ArrowBackIcon />
-                    </button>
-                    <span className="page-title">Tags:</span>
-                    <div className="interact-area">
-                        <Fab color="primary" size="small" title="Add tag type" onClick={() => this.handleOpenModal(null)}>
-                            <AddIcon />
-                        </Fab>
-                    </div>
-                </div>
+                <PageHeader title="Tags" history={this.props.history}>
+                    <Fab color="primary" size="small" title="Add tag type" onClick={() => this.handleOpenModal(null)}>
+                        <AddIcon />
+                    </Fab>
+                </PageHeader>
                 {this.renderTagType()}
 
                 <Dialog open={openModal} onClose={this.handleCloseModal} >

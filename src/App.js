@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import AppRouter from './AppRouter';
+import AppRouter from './config/AppRouter';
 import Header from './components/header/Header';
 import Sidebar from './components/drawer/Sidebar';
 import { makeStyles } from '@material-ui/core/styles';

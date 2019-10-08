@@ -44,14 +44,13 @@ export default class MovieInvolveSection extends Component {
 
     render() {
         return (
-            <ul className="movies-section">
-                <InfiniteScroll dataLength={this.state.movies.length}
-                    next={this.fetchData}
-                    hasMore={true}
-                >
-                    {this.state.movies.map(movie => <MovieAsync key={movie.id} movieId={movie.movieId} />)}
-                </InfiniteScroll>
-            </ul>
+            <InfiniteScroll dataLength={this.state.movies.length}
+                next={this.fetchData}
+                hasMore={true}
+                className="movies-section"
+            >
+                {this.state.movies.map(movie => <MovieAsync key={movie.id} movieId={movie.movieId} />)}
+            </InfiniteScroll>
         )
     }
 }

@@ -150,8 +150,8 @@ class MovieDetailModalForm extends Component {
                             <TextField
                                 margin="normal"
                                 id="length"
-                                label="Length"
-                                type="text"
+                                label="Length (mins)"
+                                type="number"
                                 fullWidth
                                 name="length"
                                 autoComplete="off"

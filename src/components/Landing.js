@@ -9,12 +9,12 @@ export default function Landing() {
         <div>
             <SectionContainer sectionType={sectionTypes.MODEL}
                 content={<ModelsSectionContainer
-                    numberOfModels={14} page={1} />} />
+                    numberOfModels={12} page={1} />} />
 
             <SectionContainer sectionType={sectionTypes.MOVIES}
                 content={
                     <MoviesSectionContainer
-                        numberOfMovies={10} page={1} />
+                        numberOfMovies={12} page={1} />
                 } />
         </div>
     )

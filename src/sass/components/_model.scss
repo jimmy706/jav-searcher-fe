@@ -1,5 +1,5 @@
 .models-section {
-    @include grid(repeat(7,1fr),20px);
+    @include grid(repeat(5,1fr),20px);
     .model{
         @extend %section-comp;
     }

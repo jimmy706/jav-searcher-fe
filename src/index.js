@@ -6,7 +6,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import blue from '@material-ui/core/colors/blue';
 import indigo from "@material-ui/core/colors/indigo";
 import { Provider } from "react-redux";
-import store from "./store";
+import store from "./config/store";
 
 
 

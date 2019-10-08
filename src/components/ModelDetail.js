@@ -151,16 +151,16 @@ export default class ModelDetail extends Component {
                                         <strong>Born: </strong>{this.renderModelDetail('born')}
                                     </li>
                                     <li>
-                                        <strong>Breast: </strong>{this.renderModelDetail('breast')}
+                                        <strong>Breast: </strong>{this.renderModelDetail('breast')} cm
                                     </li>
                                     <li>
-                                        <strong>Waist: </strong>{this.renderModelDetail('waist')}
+                                        <strong>Waist: </strong>{this.renderModelDetail('waist')} cm
                                     </li>
                                     <li>
-                                        <strong>Hips: </strong>{this.renderModelDetail('hips')}
+                                        <strong>Hips: </strong>{this.renderModelDetail('hips')} cm
                                     </li>
                                     <li>
-                                        <strong>Height: </strong>{this.renderModelDetail('height')}
+                                        <strong>Height: </strong>{this.renderModelDetail('height')} cm
                                     </li>
                                 </ul>
                             </div>

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Fab } from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import axios from "axios";
 import prefixUrl from "../constant/prefix-url";
 import { Link } from "react-router-dom";
+import PageHeader from './contents/headers/PageHeader';
 
 
 export default class Studios extends Component {
@@ -25,7 +25,7 @@ export default class Studios extends Component {
 
     renderStudios = () => {
         const { studios } = this.state;
-        return studios.map(studio => <Link key={studio.id} to={"/studios/get-movies?studio=" + studio.studioName} className="studio">{studio.studioName}</Link>);
+        return studios.map(studio => <Link key={studio.id} to={"/movies/all?studio=" + studio.studioName} className="studio">{studio.studioName}</Link>);
     }
 
 
@@ -33,17 +33,11 @@ export default class Studios extends Component {
     render() {
         return (
             <div>
-                <div className="page-header">
-                    <button className="back-btn" title="Back to landing page" onClick={() => this.props.history.goBack()}>
-                        <ArrowBackIcon />
-                    </button>
-                    <span className="page-title">Studios:</span>
-                    <div className="interact-area">
-                        <Fab color="primary" size="small" title="Add new studio" >
-                            <AddIcon />
-                        </Fab>
-                    </div>
-                </div>
+                <PageHeader title="Studios" history={this.props.history}>
+                    <Fab color="primary" size="small" title="Add new studio" >
+                        <AddIcon />
+                    </Fab>
+                </PageHeader>
                 <div className="studio-content section-container">
                     {this.renderStudios()}
                 </div>
