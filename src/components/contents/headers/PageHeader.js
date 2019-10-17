@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 export default function PageHeader(props) {
     return (
         <div className="page-header">
-            <button className="back-btn" title="Back to landing page" onClick={() => props.history.goBack()}>
+            <button className="back-btn" title="Back to previous page" onClick={() => props.history.goBack()}>
                 <ArrowBackIcon />
             </button>
             <span className="page-title">{props.title}:</span>

@@ -9,7 +9,7 @@ const sectionTypes = {
     },
     MOVIES: {
         title: "Movies",
-        url: "/"
+        url: "/movies/all"
     }
 }
 

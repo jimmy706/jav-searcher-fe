@@ -23,6 +23,7 @@ export default class ModelDetail extends Component {
 
         axios(`${prefixUrl}/models/model-info/${modelId}`)
             .then(res => {
+                document.title = `Model info - ${res.data.name}`;
                 this.setState({
                     modelInfo: res.data,
                 })

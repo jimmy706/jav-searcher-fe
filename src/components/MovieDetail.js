@@ -32,7 +32,7 @@ export default class MovieDetail extends Component {
 
     componentDidMount() {
         const movieId = this.props.match.params.movieId;
-        document.title = movieId;
+        document.title = `Movie info - ${movieId}`;
 
         axios.get(prefixUrl + "/movies/movie-info/" + movieId)
             .then(res => {

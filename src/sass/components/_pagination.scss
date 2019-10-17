@@ -1,0 +1,37 @@
+.pagination{
+    margin: 15px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .page-item{
+        cursor: pointer;
+        margin-right: 10px;
+        &.disable{
+            pointer-events: none;
+            cursor: no-drop;
+            .page-link{
+                color: #6c757d;
+                pointer-events: none;
+                cursor: no-drop;
+            }
+        }
+        &.active{
+            .page-link{
+                background-color: $dark-blue;
+            }
+        }
+    }
+    .page-link{
+        display: block;
+        padding: 15px;
+        background-color: $dark;
+        text-align: center;
+        font-size: 1rem;
+        color: $white;
+        transition: all 0.3s ease;
+        &:hover{
+            background-color: #222;
+        }
+    }
+    
+}

@@ -116,5 +116,6 @@ MultiSelect.propTypes = {
     onSelectItem: PropTypes.func,
     onRemoveItem: PropTypes.func,
     suggestions: PropTypes.array.isRequired,
-    selected: PropTypes.array.isRequired
+    selected: PropTypes.array.isRequired,
+    onChange: PropTypes.func
 }

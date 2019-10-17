@@ -13,7 +13,6 @@ let modalType = null;
 
 const containerStyle = makeStyles({
   root: {
-    border: "1px solid #60606085",
     borderRadius: "10px",
     minHeight: "100vh"
   }

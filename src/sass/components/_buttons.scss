@@ -19,6 +19,23 @@
     border: 0;
 }
 
+.select-btn {
+    background: $dark;
+    color: $white;
+    cursor: pointer;
+    margin: 0 15px 15px 0;
+    border-radius: 15px;
+    padding: 10px 12px;
+    border: 0;
+    transition: background 0.3s;
+    &:hover{
+        background: #434343;
+    }
+    &.active{
+        background: $blue!important;
+    } 
+}
+
 .back-btn:hover{
     background: #162D40;
 }

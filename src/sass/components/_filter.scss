@@ -1,0 +1,8 @@
+.filter-container{
+    display: flex;
+    margin: 20px 0;
+    .filter-component{
+        margin-right: 15px;
+        flex: 1;
+    }
+}
