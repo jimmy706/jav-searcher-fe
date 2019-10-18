@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import HistoryIcon from '@material-ui/icons/History';
-import FindInPageIcon from '@material-ui/icons/FindInPage';
 import StarIcon from '@material-ui/icons/Star';
 import MovieIcon from '@material-ui/icons/Movie';
 import AddToQueueIcon from '@material-ui/icons/AddToQueue';
@@ -83,11 +82,6 @@ export default class Sidebar extends Component {
                                 </Link>
                             </li>
                             <li>
-                                <a href="/" >
-                                    <FindInPageIcon /> Advance search
-                                </a>
-                            </li>
-                            <li>
                                 <a href="/">
                                     <HistoryIcon /> History
                                 </a>
@@ -104,7 +98,9 @@ export default class Sidebar extends Component {
                             </li>
                             {this.renderLinkList("studios")}
                             <li>
-                                <a href="/">More...</a>
+                                <Link to="/studios/all" title="More...">
+                                    More...
+                                </Link>
                             </li>
                         </ul>
                     </li>
@@ -118,9 +114,7 @@ export default class Sidebar extends Component {
                             </li>
                             {this.renderLinkList("starts")}
                             <li>
-                                <a href="/">
-                                    More...
-                                </a>
+                                <Link to="/">More...</Link>
                             </li>
                         </ul>
                     </li>

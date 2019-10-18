@@ -5,9 +5,11 @@ import axios from "axios";
 import prefixUrl from "../constant/prefix-url";
 import { Link } from "react-router-dom";
 import PageHeader from './contents/headers/PageHeader';
+import { updateStudioFilterAct } from "../actions/filterMovies.action";
+import { connect } from "react-redux";
 
 
-export default class Studios extends Component {
+class Studios extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -25,9 +27,11 @@ export default class Studios extends Component {
 
     renderStudios = () => {
         const { studios } = this.state;
-        return studios.map(studio => <Link key={studio.id} to={"/movies/all?studio=" + studio.studioName} className="studio">{studio.studioName}</Link>);
+        return studios.map(studio => <Link key={studio.id}
+            to={"/movies/all?studio=" + studio.studioName}
+            onClick={() => this.props.updateStudioFilter(studio.studioName)}
+            className="studio">{studio.studioName}</Link>);
     }
-
 
 
     render() {
@@ -45,3 +49,11 @@ export default class Studios extends Component {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateStudioFilter: (studio) => dispatch(updateStudioFilterAct(studio))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Studios);

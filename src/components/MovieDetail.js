@@ -1,18 +1,23 @@
 import React, { Component, Suspense } from 'react';
 import axios from "axios";
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import prefixUrl from "../constant/prefix-url";
-import { Grid, Dialog } from "@material-ui/core";
+import { Grid, Dialog, Fab } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import MovieDetailModalForm from "./modals/MovieDetailModalForm";
 import moment from "moment";
 import TagsModalForm from './modals/TagsModalForm';
 import BlockContentLoader from "./content-loaders/SmallBlockContentLoader";
 import MoviesUpdateActressForm from './modals/MoviesUpdateActressForm';
+import AllowDoActionModal from "./modals/AllowDoActionModal";
 import DynamicBlockContentLoader from "./content-loaders/DynamicBlockContentLoader";
+import PageHeader from './contents/headers/PageHeader';
+import DeleteIcon from '@material-ui/icons/Delete';
+import { connect } from "react-redux";
+import { openSnackbarAction } from "../actions/snackbar.action";
+
 const ModelAsync = React.lazy(() => import("./contents/section/models-section/ModelAsync"));
 
-export default class MovieDetail extends Component {
+class MovieDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -119,6 +124,12 @@ export default class MovieDetail extends Component {
                 return <TagsModalForm closeModal={this.closeModal} movieId={movieInfo.movieId} selected={tags} changeMovieInfo={this.changeMovieInfo} />;
             case "MODELS":
                 return <MoviesUpdateActressForm closeModal={this.closeModal} movieId={movieInfo.movieId} selected={actresses} changeMovieInfo={this.changeMovieInfo} />
+            case "CONFIRM":
+                return <AllowDoActionModal
+                    title="Do you really want to delete this movie?"
+                    content="After delete this, you can't undo your action"
+                    closeModal={this.closeModal}
+                    onConfirm={this.deleteMovie} />
             default:
                 return <MovieDetailModalForm movieDetail={movieDetail ? movieDetail : {}}
                     closeModal={this.closeModal}
@@ -161,7 +172,20 @@ export default class MovieDetail extends Component {
         })
     }
 
-
+    deleteMovie = (isAllow) => {
+        const { movieInfo } = this.state;
+        if (isAllow) {
+            axios({
+                url: `${prefixUrl}/movies/delete-movie/${movieInfo.id}`,
+                method: 'delete'
+            })
+                .then(res => {
+                    this.props.openSnackbar(`Movie ${movieInfo.movieId} deleted`, "success");
+                    this.props.history.push("/movies/all");
+                })
+                .catch(console.log);
+        }
+    }
 
     render() {
         const { movieInfo, openModal } = this.state;
@@ -169,9 +193,13 @@ export default class MovieDetail extends Component {
         const { renderDetailList, closeModal, handleOpenModal } = this;
         return (
             <div className="section-detail movie-detail-section">
-                <button className="back-btn" title="Back to landing page" onClick={() => this.props.history.goBack()}>
-                    <ArrowBackIcon />
-                </button>
+                <PageHeader history={this.props.history}>
+                    <Fab size="small"
+                        onClick={() => handleOpenModal("CONFIRM")}
+                        style={{ background: "#B71C1C" }} title="Delete movie">
+                        <DeleteIcon style={{ fill: "#fcf2f2" }} />
+                    </Fab>
+                </PageHeader>
                 <div className="detail-content">
                     <Grid container spacing={5}>
                         <Grid item xs={6}>
@@ -235,3 +263,10 @@ export default class MovieDetail extends Component {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        openSnackbar: (message, variant) => dispatch(openSnackbarAction(message, variant))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(MovieDetail);

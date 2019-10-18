@@ -11,7 +11,7 @@ import MovieFilterContainer from './contents/movie-filter/MovieFilterContainer';
 import { Dialog } from "@material-ui/core";
 import MultiSelectModelForm from './modals/MultiSelectModalForm';
 import { connect } from "react-redux";
-import { updateModelsFilterAct, updateTagsFilterAct } from "../actions/filterMovies.action";
+import { updateModelsFilterAct, updateTagsFilterAct, resetFilterAct } from "../actions/filterMovies.action";
 import StudioPickerModal from './modals/StudioPickerModal';
 
 class Movies extends Component {
@@ -118,6 +118,9 @@ class Movies extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.props.resetFilter();
+    }
 
 
     renderModal = () => {
@@ -180,7 +183,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         updateTagsFilter: (tags) => dispatch(updateTagsFilterAct(tags)),
-        updateModelsFitler: (models) => dispatch(updateModelsFilterAct(models))
+        updateModelsFitler: (models) => dispatch(updateModelsFilterAct(models)),
+        resetFilter: () => dispatch(resetFilterAct())
     }
 }
 

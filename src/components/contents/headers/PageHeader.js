@@ -8,7 +8,7 @@ export default function PageHeader(props) {
             <button className="back-btn" title="Back to previous page" onClick={() => props.history.goBack()}>
                 <ArrowBackIcon />
             </button>
-            <span className="page-title">{props.title}:</span>
+            <span className="page-title">{(props.title) ? (`${props.title}: `) : ""}</span>
             <div className="interact-area">
                 {props.children}
             </div>
@@ -17,5 +17,5 @@ export default function PageHeader(props) {
 }
 
 PageHeader.propTypes = {
-    title: PropTypes.string.isRequired
+    history: PropTypes.object.isRequired
 }
