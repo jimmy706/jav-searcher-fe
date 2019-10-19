@@ -1,7 +1,7 @@
 const sectionTypes = {
     MODEL: {
         title: "Models",
-        url: "/"
+        url: "/models/all"
     },
     RECENT: {
         title: "Recent views",

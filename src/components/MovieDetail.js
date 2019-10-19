@@ -14,6 +14,7 @@ import PageHeader from './contents/headers/PageHeader';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { connect } from "react-redux";
 import { openSnackbarAction } from "../actions/snackbar.action";
+import BookmarksIcon from '@material-ui/icons/Bookmarks';
 
 const ModelAsync = React.lazy(() => import("./contents/section/models-section/ModelAsync"));
 
@@ -194,6 +195,11 @@ class MovieDetail extends Component {
         return (
             <div className="section-detail movie-detail-section">
                 <PageHeader history={this.props.history}>
+                    <Fab size="small"
+                        title="Add to favorite"
+                        style={{ marginRight: "15px" }}>
+                        <BookmarksIcon />
+                    </Fab>
                     <Fab size="small"
                         onClick={() => handleOpenModal("CONFIRM")}
                         style={{ background: "#B71C1C" }} title="Delete movie">

@@ -3,7 +3,7 @@ import axios from "axios";
 import prefixUrl from "../../../../constant/prefix-url";
 import ModelAsync from './ModelAsync';
 import ModelSectionContentLoader from "../../../content-loaders/ModelSectionContentLoader";
-
+import PropTypes from "prop-types";
 
 export default class ModelsSectionContainer extends Component {
     constructor(props) {
@@ -47,4 +47,9 @@ export default class ModelsSectionContainer extends Component {
             </>
         )
     }
+}
+
+ModelSectionContentLoader.propTypes = {
+    numberOfModels: PropTypes.number.isRequired,
+    page: PropTypes.number.isRequired
 }
