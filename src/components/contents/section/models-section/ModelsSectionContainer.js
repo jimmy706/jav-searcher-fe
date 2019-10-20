@@ -50,6 +50,6 @@ export default class ModelsSectionContainer extends Component {
 }
 
 ModelSectionContentLoader.propTypes = {
-    numberOfModels: PropTypes.number.isRequired,
-    page: PropTypes.number.isRequired
+    numberOfModels: PropTypes.number,
+    page: PropTypes.number
 }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import HistoryIcon from '@material-ui/icons/History';
 import StarIcon from '@material-ui/icons/Star';
 import MovieIcon from '@material-ui/icons/Movie';
 import AddToQueueIcon from '@material-ui/icons/AddToQueue';
 import CategoryIcon from '@material-ui/icons/Category';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import PeopleIcon from '@material-ui/icons/People';
 import { Link } from "react-router-dom";
 import axios from "axios";
 import prefixUrl from "../../constant/prefix-url";
@@ -77,14 +77,15 @@ export default class Sidebar extends Component {
                                 </button>
                             </li>
                             <li>
+                                <Link to="/movies/all" title="Movies"><MovieIcon /> Movies</Link>
+                            </li>
+                            <li>
+                                <Link to="/models/all" title="Models"><PeopleIcon /> Models</Link>
+                            </li>
+                            <li>
                                 <Link to="/tags/all" title="tags">
                                     <CategoryIcon /> Tags
                                 </Link>
-                            </li>
-                            <li>
-                                <a href="/">
-                                    <HistoryIcon /> History
-                                </a>
                             </li>
                         </ul>
                     </li>
