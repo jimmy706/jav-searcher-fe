@@ -24,31 +24,26 @@ class MovieDetail extends Component {
         this.state = {
             movieInfo: {},
             openModal: false,
-            modalType: 'DETAIL'
+            modalType: 'DETAIL',
+            star: null
         }
     }
 
-    closeModal = () => {
-        this.setState({ openModal: false });
-    }
+    closeModal = () => this.setState({ openModal: false });
 
-    handleOpenModal = (type) => {
-        this.setState({ openModal: true, modalType: type });
-    }
 
-    componentDidMount() {
+    handleOpenModal = (type) => this.setState({ openModal: true, modalType: type });
+
+    async componentDidMount() {
         const movieId = this.props.match.params.movieId;
         document.title = `Movie info - ${movieId}`;
+        const requests = [axios(`${prefixUrl}/movies/movie-info/${movieId}`), axios(`${prefixUrl}/stars/get-star?itemId=${movieId}&type=MOVIE`)];
 
-        axios.get(prefixUrl + "/movies/movie-info/" + movieId)
-            .then(res => {
-                this.setState({
-                    movieInfo: res.data
-                })
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        const result = await Promise.all(requests);
+        this.setState({
+            movieInfo: result[0].data,
+            star: result[1].data
+        })
     }
 
     handleChangeMovieImage = (e) => {
@@ -188,17 +183,44 @@ class MovieDetail extends Component {
         }
     }
 
+    handleAddStar = () => {
+        const { movieId } = this.state.movieInfo;
+        const { star } = this.state;
+        if (!star) {
+            axios({
+                method: 'post',
+                params: {
+                    itemId: movieId,
+                    type: 'MOVIE'
+                },
+                url: `${prefixUrl}/stars/add`
+            })
+                .then(star => {
+                    this.setState({ star: star.data })
+                })
+                .catch(err => console.log(err.response))
+        }
+        else {
+            axios.delete(`${prefixUrl}/stars/remove/${star.id}`)
+                .then(res => {
+                    this.setState({ star: null })
+                })
+                .catch(console.log)
+        }
+    }
+
     render() {
-        const { movieInfo, openModal } = this.state;
+        const { movieInfo, openModal, star } = this.state;
         const { movieDetail } = movieInfo;
         const { renderDetailList, closeModal, handleOpenModal } = this;
         return (
             <div className="section-detail movie-detail-section">
                 <PageHeader history={this.props.history}>
                     <Fab size="small"
-                        title="Add to favorite"
-                        style={{ marginRight: "15px" }}>
-                        <BookmarksIcon />
+                        title={star ? "Remove mark" : "Add to favorite"}
+                        style={{ marginRight: "15px" }}
+                        onClick={this.handleAddStar}>
+                        <BookmarksIcon style={{ fill: star ? "#142C6B" : "" }} />
                     </Fab>
                     <Fab size="small"
                         onClick={() => handleOpenModal("CONFIRM")}
