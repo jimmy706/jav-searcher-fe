@@ -36,7 +36,7 @@ export default function ModelAsync({ modelId }) {
                     (modelInfo.avatar) ? (<CardMedia
                         component="img"
                         alt={modelInfo.name}
-                        image={prefixUrl + modelInfo.avatar}
+                        image={modelInfo.avatar}
                         title={modelInfo.name}
                     />) : <DynamicBlockContentLoader width={250} height={120} />
                 }

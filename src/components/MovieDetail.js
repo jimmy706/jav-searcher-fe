@@ -73,7 +73,7 @@ class MovieDetail extends Component {
         if (movieInfo.movieImage) {
             return (
                 <div className="img-container">
-                    <label htmlFor="movieImage" className="img-select"><img src={prefixUrl + movieInfo.movieImage} className="movie-img" alt={movieInfo.movieId} /></label>
+                    <label htmlFor="movieImage" className="img-select"><img src={movieInfo.movieImage} className="movie-img" alt={movieInfo.movieId} /></label>
                     <input type="file" name="movieImage" id="movieImage" onChange={this.handleChangeMovieImage} />
                 </div>
             )

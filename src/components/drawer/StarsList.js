@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import prefixUrl from "../../constant/prefix-url";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -6,12 +6,19 @@ import StarIcon from '@material-ui/icons/Star';
 
 export default function StarsList() {
     let [stars, setStars] = useState(["MVSD-123", "NHDTB-112", "Tokyo Hot n0686"]);
+    let [isLoaded, setIsLoaded] = useState(false);
+    useEffect(() => {
+        if (!isLoaded) {
+            axios(`${prefixUrl}/stars/get-lasted?type=MOVIE&limit=5`)
+                .then(stars => {
+                    setIsLoaded(true);
+                    setStars(stars.data);
+                })
+                .catch(console.log)
+        }
+    }, [isLoaded]);
 
-    axios(`${prefixUrl}/stars/get-lasted?type=MOVIE&limit=5`)
-        .then(stars => {
-            setStars(stars.data);
-        })
-        .catch(console.log);
+
 
     function renderList() {
         return stars.map((star, index) => {

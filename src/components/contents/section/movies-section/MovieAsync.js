@@ -34,7 +34,7 @@ export default function MovieAsync({ movieId }) {
                 <CardMedia
                     component="img"
                     alt={movieId}
-                    image={prefixUrl + movieImage}
+                    image={movieImage}
                     title={movieId}
                 />
             )

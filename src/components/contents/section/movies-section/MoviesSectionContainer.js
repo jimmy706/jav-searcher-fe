@@ -10,7 +10,7 @@ class MoviesSectionContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            movies: []
+            movies: null
         }
     }
 
@@ -79,7 +79,7 @@ class MoviesSectionContainer extends Component {
 
 
     renderMovieList = () => {
-        if (this.state.movies.length) {
+        if (this.state.movies) {
             return (
                 <div className="movies-section">
                     {this.state.movies.map(movie => {

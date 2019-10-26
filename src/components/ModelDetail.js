@@ -93,7 +93,7 @@ class ModelDetail extends Component {
         if (modelInfo.avatar) {
             return (
                 <div className="img-container">
-                    <label htmlFor="movieImage" className="img-select"><img src={prefixUrl + modelInfo.avatar} className="movie-img" alt={modelInfo.name} /></label>
+                    <label htmlFor="movieImage" className="img-select"><img src={modelInfo.avatar} className="movie-img" alt={modelInfo.name} /></label>
                     <input type="file" name="movieImage" id="movieImage" onChange={this.handleChangeAvatar} />
                 </div>
             )

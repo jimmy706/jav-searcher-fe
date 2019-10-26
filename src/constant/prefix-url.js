@@ -1,3 +1,3 @@
-const prefixURL = "http://localhost:4000";
+const prefixURL = "https://safe-headland-54928.herokuapp.com";
 
 export default prefixURL;

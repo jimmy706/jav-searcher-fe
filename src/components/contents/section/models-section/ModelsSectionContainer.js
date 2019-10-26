@@ -9,7 +9,7 @@ export default class ModelsSectionContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            models: []
+            models: null
         }
     }
 
@@ -29,7 +29,7 @@ export default class ModelsSectionContainer extends Component {
     }
 
     renderModels = () => {
-        if (this.state.models.length) {
+        if (this.state.models) {
             return (
                 <div className="models-section">
                     {this.state.models.map(model => <ModelAsync key={model.id} modelId={model.id} />)}
