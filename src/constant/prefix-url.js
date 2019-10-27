@@ -1,3 +1,3 @@
-const prefixURL = "https://safe-headland-54928.herokuapp.com";
+const prefixURL = "https://jav-searcher.herokuapp.com";
 
 export default prefixURL;
