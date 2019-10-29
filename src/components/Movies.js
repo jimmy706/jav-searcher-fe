@@ -3,25 +3,27 @@ import axios from "axios";
 import prefixUrl from "../constant/prefix-url";
 import PageHeader from './contents/headers/PageHeader';
 import MoviesSectionContainer from './contents/section/movies-section/MoviesSectionContainer';
-import { Link } from "react-router-dom";
 import queryString from "query-string"; // TODO: allow to get params from url
-import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import MovieFilterContainer from './contents/movie-filter/MovieFilterContainer';
 import { Dialog } from "@material-ui/core";
 import MultiSelectModelForm from './modals/MultiSelectModalForm';
 import { connect } from "react-redux";
 import { updateModelsFilterAct, updateTagsFilterAct, resetFilterAct } from "../actions/filterMovies.action";
 import StudioPickerModal from './modals/StudioPickerModal';
+import Pagination from './pagination/Pagination';
 
 class Movies extends Component {
     constructor(props) {
         super(props);
+        const params = queryString.parse(this.props.location.search);
+        const page = parseInt(params.page);
+
         this.state = {
             size: 20,
             openModal: false,
             filterType: 'TAGS',
-            suggestions: []
+            suggestions: [],
+            page: page ? page : 1
         }
     }
 
@@ -37,54 +39,13 @@ class Movies extends Component {
     }
 
     componentDidMount() {
-        const params = queryString.parse(this.props.location.search);
-        const { page } = params;
-        document.title = "Movie list - page " + (page ? page : 1);
+        const { page } = this.state;
+        document.title = "Movie list - page " + (page);
         axios(`${prefixUrl}/movies/size`)
             .then(size => {
                 this.setState({ size: size.data })
             })
             .catch(console.log);
-    }
-
-    toPrevPage = () => {
-        const params = queryString.parse(this.props.location.search);
-        const { page } = params;
-        this.props.history.push(`/movies/all?page=${page - 1}`);
-    }
-
-    toNextPage = () => {
-        const params = queryString.parse(this.props.location.search);
-        const { page } = params;
-        this.props.history.push(`/movies/all?page=${page + 1}`);
-    }
-
-    renderPagination = () => {
-        const { size } = this.state;
-        const numberOfPage = Math.ceil(size / 20); // TODO: Round a number upward to its nearest integer
-        const params = queryString.parse(this.props.location.search);
-        const { page } = params;
-        const currentPage = page ? page : 1;
-        let paginations = [];
-        for (let i = 1; i <= numberOfPage; i++) {
-            paginations.push(
-                <li className={"page-item " + (i === currentPage ? "active" : "")} key={i}>
-                    <Link className="page-link" to={"/movies/all?page=" + i}>{i}</Link>
-                </li>)
-        }
-        paginations.unshift(<li
-            key="prev"
-            className={"page-item " + (currentPage === 1 ? "disable" : "")}
-            onClick={this.toPrevPage}>
-            <KeyboardArrowLeftIcon />
-        </li>);
-        paginations.push(<li
-            key="next"
-            className={"page-item " + (currentPage === numberOfPage ? "disable" : "")}
-            onClick={this.toNextPage}>
-            <KeyboardArrowRightIcon />
-        </li>)
-        return paginations;
     }
 
     onChangeInput = (val) => {
@@ -122,6 +83,11 @@ class Movies extends Component {
         this.props.resetFilter();
     }
 
+    handleChangePage = (page) => {
+        this.setState({ page: page })
+        this.props.history.push(`/movies/all?page=${page}`);
+    }
+
 
     renderModal = () => {
         const { filterType, suggestions } = this.state;
@@ -151,19 +117,14 @@ class Movies extends Component {
     }
 
     render() {
-        const { location } = this.props;
-        const params = queryString.parse(location.search);
-        const { page } = params;
-        const { openModal } = this.state;
+        const { openModal, size, page } = this.state;
         return (
             <div>
                 <PageHeader title="Movies" history={this.props.history} ></PageHeader>
                 <MovieFilterContainer handleOpenModal={this.handleOpenModal} />
                 <div className="movies-container" style={{ marginTop: "30px" }}>
-                    <MoviesSectionContainer numberOfMovies={20} page={page ? page : 1} />
-                    <ul className="pagination">
-                        {this.renderPagination()}
-                    </ul>
+                    <MoviesSectionContainer numberOfMovies={20} page={page} />
+                    <Pagination size={size} currentPage={page} onChangePage={this.handleChangePage} />
                 </div>
                 <Dialog open={openModal} onClose={this.handleCloseModal}>
                     {this.renderModal()}

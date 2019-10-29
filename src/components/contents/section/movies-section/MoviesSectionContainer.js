@@ -38,7 +38,7 @@ class MoviesSectionContainer extends Component {
             )) {
             axios.get(prefixUrl + "/movies/movies-list", {
                 params: {
-                    page: page,
+                    page: nextProps.page,
                     tags: tags,
                     models: models.map(model => model.value),
                     studio: studio,

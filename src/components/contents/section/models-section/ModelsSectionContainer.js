@@ -13,6 +13,24 @@ export default class ModelsSectionContainer extends Component {
         }
     }
 
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        const currentPage = this.props.page;
+        const { numberOfModels } = this.props;
+        if (currentPage !== nextProps.page) {
+            axios.get(prefixUrl + "/models/models-list", {
+                params: {
+                    page: nextProps.page
+                }
+            })
+                .then(res => {
+                    this.setState({
+                        models: res.data.slice(0, numberOfModels)
+                    })
+                })
+                .catch(err => console.log(err));
+        }
+    }
+
     componentDidMount() {
         const { numberOfModels, page } = this.props;
         axios.get(prefixUrl + "/models/models-list", {
