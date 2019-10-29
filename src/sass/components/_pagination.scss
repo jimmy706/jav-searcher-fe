@@ -6,6 +6,18 @@
     .page-item{
         cursor: pointer;
         margin-right: 10px;
+        background-color: $dark;
+        padding: 10px;
+        font-size: 1rem;
+        cursor: pointer;
+        svg{
+            font-size: 1rem;
+            width: 1rem;
+            height: 1rem;
+        }
+        &:hover{
+            background-color: #222;
+        }
         &.disable{
             pointer-events: none;
             cursor: no-drop;
@@ -16,22 +28,9 @@
             }
         }
         &.active{
-            .page-link{
-                background-color: $dark-blue;
-            }
+            background-color: $dark-blue;
         }
     }
-    .page-link{
-        display: block;
-        padding: 15px;
-        background-color: $dark;
-        text-align: center;
-        font-size: 1rem;
-        color: $white;
-        transition: all 0.3s ease;
-        &:hover{
-            background-color: #222;
-        }
-    }
+
     
 }
