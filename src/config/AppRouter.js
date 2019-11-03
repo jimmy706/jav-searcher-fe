@@ -7,6 +7,7 @@ import ModelDetail from '../components/ModelDetail';
 import Studios from "../components/Studios";
 import Movies from '../components/Movies';
 import Models from '../components/Models';
+import Collections from '../components/Collections';
 
 export default function AppRouter() {
     return (
@@ -18,6 +19,7 @@ export default function AppRouter() {
             <Route path="/studios/all" exact component={Studios} />
             <Route path="/movies/all" component={Movies} />
             <Route path="/models/all" component={Models} />
+            <Route path="/collections/view/:collectionName" component={Collections} />
         </Switch>
     )
 }

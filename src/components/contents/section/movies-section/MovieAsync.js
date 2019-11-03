@@ -15,18 +15,18 @@ const useStyles = makeStyles({
 export default function MovieAsync({ movieId }) {
     const classes = useStyles();
     let [movieImage, setMovieImage] = React.useState("");
+    let [isFetched, setIsFetched] = React.useState(false);
     React.useEffect(() => {
-        let isFetched = true; // TODO: handle cancel promise if this component unmouted
-        axios(prefixUrl + "/movies/get-movie-image/" + movieId)
-            .then(res => {
-                if (isFetched) {
+        if (!isFetched) {
+            axios(prefixUrl + "/movies/get-movie-image/" + movieId)
+                .then(res => {
                     setMovieImage(res.data.movieImage);
-                }
-            })
-            .catch(console.log)
-        return () => { isFetched = false }
-        // eslint-disable-next-line 
-    }, [movieImage]);
+                    setIsFetched(true);
+                })
+                .catch(console.log)
+        }
+        // eslint-disable-next-line
+    }, [isFetched]);
 
     function renderMovieImage() {
         if (movieImage) {

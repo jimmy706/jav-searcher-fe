@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 
 export default function SectionContainer({ sectionType, content }) {
 
-
-
     return (
         <div className="section-container">
             <div className="title-wrapper">

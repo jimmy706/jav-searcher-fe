@@ -56,7 +56,8 @@ class TagsModalForm extends Component {
                 this.props.closeModal();
             })
             .catch(err => {
-                openSnackbar(err.response.data.message, 'error');
+                console.log(err.response);
+                // openSnackbar(err.response.data.message, 'error');
             });
     }
 

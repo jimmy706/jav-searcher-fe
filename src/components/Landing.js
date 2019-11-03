@@ -3,6 +3,7 @@ import sectionTypes from "../constant/sections";
 import SectionContainer from './contents/section/SectionContainer';
 import ModelsSectionContainer from './contents/section/models-section/ModelsSectionContainer';
 import MoviesSectionContainer from './contents/section/movies-section/MoviesSectionContainer';
+import CollectionContainer from './contents/section/collections-section/CollectionContainer';
 
 export default function Landing() {
 
@@ -21,6 +22,7 @@ export default function Landing() {
                     <MoviesSectionContainer
                         numberOfMovies={20} page={1} />
                 } />
+            <CollectionContainer />
         </div>
     )
 }

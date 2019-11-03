@@ -8,7 +8,6 @@ import PageHeader from './contents/headers/PageHeader';
 import { updateStudioFilterAct } from "../actions/filterMovies.action";
 import { connect } from "react-redux";
 
-
 class Studios extends Component {
     constructor(props) {
         super(props);

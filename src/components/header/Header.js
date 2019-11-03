@@ -53,7 +53,9 @@ export default function Header(props) {
                     break;
             }
         }
-        setSuggestions([])
+        else {
+            setSuggestions([]);
+        }
     }
 
 

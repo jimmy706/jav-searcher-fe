@@ -4,6 +4,7 @@ import axios from "axios";
 import MovieSectionContentLoader from "../../../content-loaders/MovieSectionContentLoader";
 import SmallBlockContentLoader from "../../../content-loaders/SmallBlockContentLoader";
 import { connect } from "react-redux";
+import { checkArrayChanged } from "../../../../constant/global-func";
 const MovieAsync = React.lazy(() => import("./MovieAsync"))
 
 class MoviesSectionContainer extends Component {
@@ -14,24 +15,12 @@ class MoviesSectionContainer extends Component {
         }
     }
 
-    checkArrayChanged(newArr, prevArr) {
-        if (newArr.length !== prevArr.length) {
-            return true;
-        }
-        for (let i = 0; i < prevArr.length; i++) {
-            if (newArr[i] !== prevArr[i]) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     UNSAFE_componentWillReceiveProps(nextProps) {
         const { page, movieFilter, numberOfMovies } = this.props;
         const { tags, models, studio, duration, sort } = nextProps.movieFilter;
         if (page !== nextProps.page ||
-            (this.checkArrayChanged(nextProps.movieFilter.tags, movieFilter.tags) ||
-                this.checkArrayChanged(nextProps.movieFilter.models.map(model => model.value), movieFilter.models.map(model => model.value)) ||
+            (checkArrayChanged(nextProps.movieFilter.tags, movieFilter.tags) ||
+                checkArrayChanged(nextProps.movieFilter.models.map(model => model.value), movieFilter.models.map(model => model.value)) ||
                 movieFilter.duration !== nextProps.movieFilter.duration ||
                 movieFilter.studio !== nextProps.movieFilter.studio ||
                 movieFilter.sort !== nextProps.movieFilter.sort

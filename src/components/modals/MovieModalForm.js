@@ -5,6 +5,7 @@ import DragNDrop from "../dragndrop/DragNDrop";
 import prefixUrl from "../../constant/prefix-url";
 import { connect } from "react-redux";
 import { openSnackbarAction } from "../../actions/snackbar.action";
+import { Link } from "react-router-dom";
 
 class MovieModalForm extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ class MovieModalForm extends Component {
                 method: 'POST'
             })
                 .then(res => {
-                    openSnackbar("Create movie successfully", "success");
+                    openSnackbar("Create movie successfully", "success", <Button key="view-btn" color="default"><Link style={{ color: "#fff" }} to={"/movies/detail/" + movieId}>View</Link></Button>);
                     this.props.handleClose();
                 })
                 .catch(err => openSnackbar(err.response.data.message, 'error'));
@@ -48,7 +49,8 @@ class MovieModalForm extends Component {
                 }
             })
                 .then(res => {
-                    openSnackbar("Create movie successfully", "success");
+                    openSnackbar("Create movie successfully", "success", <Button key="view-btn" color="default"><Link style={{ color: "#fff" }} to={"/movies/detail/" + movieId}>View</Link></Button>
+                    );
                     this.props.handleClose();
                 })
                 .catch(err => openSnackbar(err.response.data.message, 'error'));
@@ -129,7 +131,7 @@ class MovieModalForm extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        openSnackbar: (mess, variant) => dispatch(openSnackbarAction(mess, variant))
+        openSnackbar: (mess, variant, action) => dispatch(openSnackbarAction(mess, variant, action))
     }
 }
 

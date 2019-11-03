@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { updateModelsFilterAct, updateTagsFilterAct, resetFilterAct } from "../actions/filterMovies.action";
 import StudioPickerModal from './modals/StudioPickerModal';
 import Pagination from './pagination/Pagination';
+import { checkArrayChanged } from '../constant/global-func';
 
 class Movies extends Component {
     constructor(props) {
@@ -40,12 +41,51 @@ class Movies extends Component {
 
     componentDidMount() {
         const { page } = this.state;
+        const { filterTags, filterModels, filterDuration, filterStudio } = this.props;
         document.title = "Movie list - page " + (page);
-        axios(`${prefixUrl}/movies/size`)
+        axios({
+            url: `${prefixUrl}/movies/count`,
+            params: {
+                tags: filterTags,
+                models: filterModels.map(model => model.value),
+                studio: filterStudio,
+                duration: filterDuration
+            }
+        })
             .then(size => {
-                this.setState({ size: size.data })
+                this.setState({
+                    size: size.data
+                })
             })
             .catch(console.log);
+    }
+
+    // TODO: update pagination base on filter movie
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        const { filterTags, filterModels, filterDuration, filterStudio } = this.props; // current props
+        if (
+            checkArrayChanged(nextProps.filterTags, filterTags) ||
+            checkArrayChanged(nextProps.filterModels.map(model => model.value), filterModels.map(model => model.value)) ||
+            nextProps.filterDuration !== filterDuration ||
+            nextProps.filterStudio !== filterStudio
+        ) {
+            axios({
+                url: `${prefixUrl}/movies/count`,
+                params: {
+                    tags: nextProps.filterTags,
+                    models: nextProps.filterModels.map(model => model.value),
+                    studio: nextProps.filterStudio,
+                    duration: nextProps.filterDuration
+                }
+            })
+                .then(size => {
+                    this.setState({
+                        page: 1,
+                        size: size.data
+                    })
+                })
+                .catch(console.log);
+        }
     }
 
     onChangeInput = (val) => {
@@ -137,7 +177,9 @@ class Movies extends Component {
 const mapStateToProps = (state) => {
     return {
         filterTags: state.movieFilter.tags,
-        filterModels: state.movieFilter.models
+        filterModels: state.movieFilter.models,
+        filterStudio: state.movieFilter.studio,
+        filterDuration: state.movieFilter.duration
     }
 }
 

@@ -4,7 +4,6 @@ import { InputBase, } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import prefixUrl from "../../constant/prefix-url";
 
 
 export default function SearchBox({ onSubmit, suggestions = [], onChange }) {
@@ -30,7 +29,7 @@ export default function SearchBox({ onSubmit, suggestions = [], onChange }) {
                 {suggestions.map(item => (
                     <li key={item.title} className={classes.suggestionItem}>
                         <Link to={item.url} className={classes.suggestionLink}>
-                            <img alt="/" src={prefixUrl + item.img} className={classes.suggestionImg} /> {item.title}
+                            <img alt="/" src={item.img} className={classes.suggestionImg} /> {item.title}
                         </Link>
                     </li>
                 ))}

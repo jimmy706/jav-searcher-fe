@@ -3,9 +3,10 @@ import prefixUrl from "../../constant/prefix-url";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import MovieIcon from '@material-ui/icons/Movie';
+import { updateStudioFilterAct } from "../../actions/filterMovies.action";
+import { connect } from "react-redux";
 
-
-export default function StudiosList() {
+function StudiosList(props) {
     let [studios, setStudios] = useState(["Tokyo Hot", "Caribbean"]);
     let [isLoaded, setIsLoaded] = useState(false);
     useEffect(() => {
@@ -22,7 +23,7 @@ export default function StudiosList() {
     const renderList = () => {
         return studios.map((studio, index) => (
             <li key={"studio-" + index}>
-                <Link to={`/movies/all?studio=${studio}`} title={studio}>{studio}</Link>
+                <Link onClick={() => props.updateStudioFilter(studio)} to={`/movies/all?studio=${studio}`} title={studio}>{studio}</Link>
             </li>
         ))
 
@@ -47,3 +48,11 @@ export default function StudiosList() {
         </ul>
     )
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateStudioFilter: (studio) => dispatch(updateStudioFilterAct(studio))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(StudiosList);
