@@ -14,7 +14,10 @@ import PageHeader from './contents/headers/PageHeader';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { connect } from "react-redux";
 import { openSnackbarAction } from "../actions/snackbar.action";
+import { updateTagsFilterAct } from "../actions/filterMovies.action";
 import BookmarksIcon from '@material-ui/icons/Bookmarks';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import AddToCollectionModal from './modals/AddToCollectionModal';
 
 const ModelAsync = React.lazy(() => import("./contents/section/models-section/ModelAsync"));
 
@@ -126,6 +129,11 @@ class MovieDetail extends Component {
                     content="After delete this, you can't undo your action"
                     closeModal={this.closeModal}
                     onConfirm={this.deleteMovie} />
+            case "COLLECTION":
+                return <AddToCollectionModal
+                    closeModal={this.closeModal}
+                    movieId={movieInfo.movieId}
+                />
             default:
                 return <MovieDetailModalForm movieDetail={movieDetail ? movieDetail : {}}
                     closeModal={this.closeModal}
@@ -139,7 +147,7 @@ class MovieDetail extends Component {
         const { movieInfo } = this.state;
         if (movieInfo["tags"])
             return movieInfo["tags"].map(tag => {
-                return <li className="tag-item" key={tag}><Link to={"/tags/" + tag}>{tag}</Link></li>
+                return <li className="tag-item" key={tag}><Link to={"/movies/all?tags=" + tag} onClick={() => this.props.updateTagsFilter(tag)}>{tag}</Link></li>
             })
         else
             return null;
@@ -215,7 +223,13 @@ class MovieDetail extends Component {
         const { renderDetailList, closeModal, handleOpenModal } = this;
         return (
             <div className="section-detail movie-detail-section">
-                <PageHeader history={this.props.history}>
+                <PageHeader history={this.props.history} >
+                    <Fab size="small" title="Save to collection"
+                        color="primary"
+                        style={{ marginRight: "15px" }}
+                        onClick={() => handleOpenModal("COLLECTION")}>
+                        <PlaylistAddIcon />
+                    </Fab>
                     <Fab size="small"
                         title={star ? "Remove mark" : "Add to favorite"}
                         style={{ marginRight: "15px" }}
@@ -283,7 +297,7 @@ class MovieDetail extends Component {
                         </ul>
                     </div>
                 </div>
-                <Dialog open={openModal} onClose={closeModal}>
+                <Dialog open={openModal} scroll="paper" onClose={closeModal}>
                     {this.renderModalContent()}
                 </Dialog>
             </div>
@@ -293,7 +307,8 @@ class MovieDetail extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        openSnackbar: (message, variant) => dispatch(openSnackbarAction(message, variant))
+        openSnackbar: (message, variant) => dispatch(openSnackbarAction(message, variant)),
+        updateTagsFilter: (tag) => dispatch(updateTagsFilterAct([tag]))
     }
 }
 

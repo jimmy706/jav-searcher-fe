@@ -1,0 +1,33 @@
+.collections-section{
+    .section-content{
+        @include grid(repeat(5,1fr),20px);
+    }
+    
+    .collection{
+        position: relative;
+        white-space: nowrap;
+        overflow: hidden;
+        background-color: $dark-blue;
+        border-radius: 5px;
+        .collection-header{
+            position: relative;
+            .toggle{
+                position: absolute;
+                top: 4px;
+                right: 5px;
+                cursor: pointer;
+            }
+        }
+        .collection-content{
+            color: $white;
+            display: flex;
+            align-items: center;
+            text-overflow: ellipsis;
+            padding: 25px 20px;
+            box-sizing: border-box;
+            svg{
+                margin-right: 10px;
+            }
+        }
+    }
+}

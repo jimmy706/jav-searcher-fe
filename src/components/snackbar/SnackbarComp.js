@@ -70,9 +70,10 @@ function SnackbarComp(props) {
                 }
                 className={classes[snackbarState.variant]}
                 action={[
+                    snackbarState.action ? snackbarState.action : <span key="nothing" style={{ display: 'none' }}></span>,
                     <IconButton key="close" aria-label="close" color="inherit" onClick={closeSnackbar}>
                         <CloseIcon />
-                    </IconButton>,
+                    </IconButton>
                 ]}
             />
         </Snackbar>
