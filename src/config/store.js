@@ -7,7 +7,7 @@ const store = createStore(
     compose(
         applyMiddleware(thunk),
         // TODO: disable redux devtools when deploy to master
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+       // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     )
 );
 
